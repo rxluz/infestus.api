@@ -1,19 +1,16 @@
 {
-  "name": "infestus.api",
+  "name": "infestus_api",
   "version": "0.0.1",
-  "description": "Infestus API ",
+  "description": "Infestus APP API",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rxluz/infestus.api.git"
-  },
-  "author": "",
+  "author": "Ricardo Luz",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rxluz/infestus.api/issues"
-  },
-  "homepage": "https://github.com/rxluz/infestus.api#readme"
+  "dependencies": {
+    "mongoose": "^4.4.14",
+    "restify": "^4.0.4",
+    "restify-validator": "^0.3.1"
+  }
 }
