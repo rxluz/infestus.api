@@ -6,6 +6,6 @@ app.get('/', (req, res) => {
 })
 
 
-return app
+module.exports=app;
 //app.listen(3000)
 //return app
