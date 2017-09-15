@@ -9,6 +9,7 @@
   "author": "Ricardo Luz",
   "license": "ISC",
   "dependencies": {
+    "http-proxy": "^1.16.2",
     "mongoose": "^4.4.14",
     "restify": "^4.0.4",
     "restify-validator": "^0.3.1"
