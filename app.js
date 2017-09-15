@@ -1,23 +1,23 @@
-//
-// var restify = require('restify');
-// var server = restify.createServer();
-// var setupController = require('./controllers/setupController.js');
-// var userController = require('./controllers/userController.js');
-// var restifyValidator = require('restify-validator');
-// //var config = require('./config/dbConnection.js');
-// //var mongoose = require('mongoose');
-//
-// //mongoose.connect(config.getMongoConnection());
-// setupController(server, restify, restifyValidator);
-// userController(server);
-//
-// server.listen(8080, function() {
-//   console.log('%s listening at %s', server.name, server.url);
-// });
+// Reuire diet
+var server = require('diet');
 
+// Main domain
+var app = server()
+app.listen('https://api.infestus.cc/')
+app.get('/', function($){
+    $.end('hello world api.infestus.cc ')
+})
 
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello Node.JS!');
-}).listen(8081);
+// Sub domain
+var sub = server()
+sub.listen('https://apinew.infestus.cc/')
+sub.get('/', function($){
+    $.end('hello world at apinew!')
+})
+
+// Other domain
+var other = server()
+other.listen('http://other.com/')
+other.get('/', function($){
+    $.end('hello world at other domain')
+})
