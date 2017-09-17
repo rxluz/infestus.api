@@ -10,13 +10,32 @@ router.route('/')
   .get(userCtrl.get)
 
   /** POST /api/user - Create new user */
-  .post(validate(paramUserValidation.createUser), userCtrl.create)
+  .post(validate(paramUserValidation.create), userCtrl.create)
 
   /** PUT /api/user - Update the current user infos */
-  .put(validate(paramUserValidation.updateUser), userCtrl.update)
+  .put(validate(paramUserValidation.update), userCtrl.update)
 
   /** DELETE /api/user - Disable the current user infos */
-  .delete(validate(paramUserValidation.disableUser), userCtrl.disable);
+  .delete(validate(paramUserValidation.disable), userCtrl.disable);
+
+
+router.route('/password')
+  /** PUT /api/user/password - Change the current user password */
+  .put(validate(paramUserValidation.updatePassword), userCtrl.updatePassword);
+
+
+router.route('/media')
+  /** GET /api/user/media - Retrieves the current user media */
+  .get(userCtrl.getMedia);
+
+router.route('/followers')
+  /** GET /api/user/followers - Retrieves the current user followers */
+  .get(userCtrl.getFollowers);
+
+router.route('/following')
+  /** GET /api/user/following - Retrieves the current user following users */
+  .get(userCtrl.getFollowing);
+
 
 
 export default router;

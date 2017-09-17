@@ -1,12 +1,35 @@
-import User from '../models/user.model';
+// import User from '../models/user.model';
 
 /**
  * Get current user infos
  * @returns {User}
  */
 function get(req, res) {
-  return res.json({hello:'getinfo'});
-  // return res.json(req.user);
+  return res.json({ hello: 'getinfo' });
+}
+
+/**
+ * Get current user medias
+ * @returns {User}
+ */
+function getMedia(req, res) {
+  return res.json({ hello: 'getMedia' });
+}
+
+/**
+ * Get current user followers
+ * @returns {User}
+ */
+function getFollowers(req, res) {
+  return res.json({ hello: 'getFollowers' });
+}
+
+/**
+ * Get current user following users
+ * @returns {User}
+ */
+function getFollowing(req, res) {
+  return res.json({ hello: 'getFollowing' });
 }
 
 /**
@@ -16,16 +39,8 @@ function get(req, res) {
  * @property {string} req.body.password - The password of user.
  * @returns {User}
  */
-function create(req, res, next) {
-  return res.json({hello:'create'});
-  // const user = new User({
-  //   username: req.body.username,
-  //   mobileNumber: req.body.mobileNumber
-  // });
-  //
-  // user.save()
-  //   .then(savedUser => res.json(savedUser))
-  //   .catch(e => next(e));
+function create(req, res) {
+  return res.json({ hello: 'create' });
 }
 
 /**
@@ -35,17 +50,19 @@ function create(req, res, next) {
  * @property {string} req.body.password - The password of user.
  * @returns {User}
  */
-function update(req, res, next) {
-  return res.json({hello:'update'});
-  // const user = req.user;
-  // user.username = req.body.username;
-  // user.mobileNumber = req.body.mobileNumber;
-  //
-  // user.save()
-  //   .then(savedUser => res.json(savedUser))
-  //   .catch(e => next(e));
+function update(req, res) {
+  return res.json({ hello: 'update' });
 }
 
+/**
+ * Update existing user password
+ * @property {string} req.body.current_password - The current password.
+ * @property {string} req.body.new_password - The new password.
+ * @returns {User}
+ */
+function updatePassword(req, res) {
+  return res.json({ hello: 'updatePassword' });
+}
 
 
 /**
@@ -55,12 +72,9 @@ function update(req, res, next) {
 
  * @returns {User}
  */
-function disable(req, res, next) {
-  return res.json({hello:'disable'});
-  // const user = req.user;
-  // user.remove()
-  //   .then(deletedUser => res.json(deletedUser))
-  //   .catch(e => next(e));
+function disable(req, res) {
+  return res.json({ hello: 'disable' });
 }
 
-export default { get, create, update, disable };
+
+export default { get, getMedia, getFollowers, getFollowing, create, update, updatePassword, disable };

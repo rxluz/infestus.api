@@ -1,9 +1,9 @@
 import express from 'express';
 import validate from 'express-validation';
-import expressJwt from 'express-jwt';
+// import expressJwt from 'express-jwt';
 import paramAuthValidation from '../requests/auth-param-validation';
 import authCtrl from '../controllers/auth.controller';
-import config from '../../config/config';
+// import config from '../../config/config';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -15,7 +15,7 @@ router.route('/')
 router.route('/recover/request')
   .post(validate(paramAuthValidation.recoverRequest), authCtrl.recoverRequest);
 
-/** POST /api/auth/recover/restore/:code - Return a valid token if the code is valid */
+/** GET /api/auth/recover/restore/:code - Return a valid token if the code is valid */
 router.route('/recover/restore/:code')
   .get(validate(paramAuthValidation.recoverRestore), authCtrl.recoverRestore);
 

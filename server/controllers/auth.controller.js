@@ -1,7 +1,7 @@
-//import jwt from 'jsonwebtoken';
-//import httpStatus from 'http-status';
-//import APIError from '../helpers/APIError';
-//import config from '../../config/config';
+// import jwt from 'jsonwebtoken';
+// import httpStatus from 'http-status';
+// import APIError from '../helpers/APIError';
+// import config from '../../config/config';
 
 // // sample user, used for authentication
 // const user = {
@@ -16,11 +16,12 @@
  * @param next
  * @returns {*}
  */
-function login(req, res, next) {
+// function login(req, res, next) {
+function login(req, res) {
   // Ideally you'll fetch this from the db
   // Idea here was to show how jwt works with simplicity
 
-  return res.json({hello:'login'});
+  return res.json({ hello: 'login' });
 
   // if (req.body.username === user.username && req.body.password === user.password) {
   //   const token = jwt.sign({
@@ -43,12 +44,11 @@ function login(req, res, next) {
  * @param next
  * @returns {*}
  */
-function recoverRequest(req, res, next) {
+function recoverRequest(req, res) {
   // Ideally you'll fetch this from the db
   // Idea here was to show how jwt works with simplicity
 
-  return res.json({hello:'recoverRequest'});
-
+  return res.json({ hello: 'recoverRequest' });
 }
 
 /**
@@ -58,12 +58,11 @@ function recoverRequest(req, res, next) {
  * @param next
  * @returns {*}
  */
-function recoverRestore(req, res, next) {
+function recoverRestore(req, res) {
   // Ideally you'll fetch this from the db
   // Idea here was to show how jwt works with simplicity
 
-  return res.json({hello:'recoverRestore'});
-
+  return res.json({ hello: 'recoverRestore' });
 }
 
 /**
