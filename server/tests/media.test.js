@@ -18,7 +18,6 @@ chai.config.includeStack = true;
 // });
 
 describe('## Media APIs', () => {
-
   describe('# POST /api/media', () => {
     it('should block the media creation', (done) => {
       request(app)
@@ -44,5 +43,4 @@ describe('## Media APIs', () => {
         .catch(done);
     });
   });
-
 });

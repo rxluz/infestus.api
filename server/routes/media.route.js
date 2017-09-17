@@ -1,7 +1,7 @@
 import express from 'express';
+import validate from 'express-validation';
 import mediaCtrl from '../controllers/media.controller';
 import mediaIDRoutes from './media.id.route';
-import validate from 'express-validation';
 import paramMediaValidation from '../requests/media-param-validation';
 
 const router = express.Router(); // eslint-disable-line new-cap

@@ -1,0 +1,1086 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Infestus.API",
+		"_postman_id": "14ee9ca9-cff3-e3a7-c6ce-b2d1fc97f0cd",
+		"description": "Methods list",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"description": "",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/user",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/media",
+					"request": {
+						"url": "http://localhost:4040/api/user/media",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/followers",
+					"request": {
+						"url": "http://localhost:4040/api/user/followers",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/following",
+					"request": {
+						"url": "http://localhost:4040/api/user/following",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nickname",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "rx@appock.co",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "23123123",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nickname",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "rx@appock.co",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "bio",
+									"value": "sdfnsdbfksdf",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/password",
+					"request": {
+						"url": "http://localhost:4040/api/user/password",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "current_password",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "new_password",
+									"value": "rx@appock.co",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/user",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "reason",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "23123123",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"description": "",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/auth",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nickname",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "skjdhskjdh",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/recover/request",
+					"request": {
+						"url": "http://localhost:4040/api/auth/recover/request",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rxluz@ssad.com",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/recover/restore/{code}",
+					"request": {
+						"url": "http://localhost:4040/api/auth/recover/restore/{code}",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "/recent",
+					"request": {
+						"url": "http://localhost:4040/api/users/recent",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/featured",
+					"request": {
+						"url": "http://localhost:4040/api/users/featured",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{user_id}/about",
+					"request": {
+						"url": "http://localhost:4040/api/users/{user_id}/about",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{user_id}/medias",
+					"request": {
+						"url": "http://localhost:4040/api/users/{user_id}/medias",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{user_id}/follow",
+					"request": {
+						"url": "http://localhost:4040/api/users/{user_id}/follow",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{user_id}/follow",
+					"request": {
+						"url": "http://localhost:4040/api/users/{user_id}/follow",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "artists",
+			"description": "",
+			"item": [
+				{
+					"name": "/recent",
+					"request": {
+						"url": "http://localhost:4040/api/artists/recent",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/featured",
+					"request": {
+						"url": "http://localhost:4040/api/artists/featured",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{artist_id}/about",
+					"request": {
+						"url": "http://localhost:4040/api/artists/{artist_id}/about",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{artist_id}/about",
+					"request": {
+						"url": "http://localhost:4040/api/artists/{artist_id}/about",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "about",
+									"value": "sdfjsf kdashf sd fgsd jfhgsdfg j",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{artist_id}/medias",
+					"request": {
+						"url": "http://localhost:4040/api/artists/{artist_id}/medias",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{artist_id}/follow",
+					"request": {
+						"url": "http://localhost:4040/api/artists/{artist_id}/follow",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{artist_id}/follow",
+					"request": {
+						"url": "http://localhost:4040/api/artists/{artist_id}/follow",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tags",
+			"description": "",
+			"item": [
+				{
+					"name": "/recent",
+					"request": {
+						"url": "http://localhost:4040/api/tags/recent",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/featured",
+					"request": {
+						"url": "http://localhost:4040/api/tags/featured",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{tag_id}/media",
+					"request": {
+						"url": "http://localhost:4040/api/tags/{tag_id}/medias",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "feed",
+			"description": "",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/feed",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/search/{term}",
+					"request": {
+						"url": "http://localhost:4040/api/feed/search/{term}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "media",
+			"description": "",
+			"item": [
+				{
+					"name": "/featured",
+					"request": {
+						"url": "http://localhost:4040/api/media/featured",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/",
+					"request": {
+						"url": "http://localhost:4040/api/media",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "picture",
+									"value": "base64",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "place_lat",
+									"value": "324",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "place_lng",
+									"value": "324324",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "place_name",
+									"value": "Vila madalena",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "artist",
+									"value": "Gemeos",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Menina",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "place_lat",
+									"value": "324",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "place_lng",
+									"value": "324324",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "place_name",
+									"value": "Vila madalena",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "artist",
+									"value": "Gemeos",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Menina",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/comments",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/comments",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/comments",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/comments",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "content",
+									"value": "sdfhgsdjhghjsdfgjdsgfjh",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/comments/{comment-id}",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/comments/{comment-id}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/comments/{comment-id}/flag",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/comments/{comment-id}/flag",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/comments/{comment-id}/flag",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/comments/{comment-id}/flag",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/like",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/like",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/like",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/like",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/like",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/like",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/flag",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/flag",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/{media-id}/flag",
+					"request": {
+						"url": "http://localhost:4040/api/media/{media-id}/flag",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "other",
+			"description": "",
+			"item": [
+				{
+					"name": "/feedback",
+					"request": {
+						"url": "http://localhost:4040/api/other/feedback",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token_user}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "rx@appock.co",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "message",
+									"value": "23123123",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

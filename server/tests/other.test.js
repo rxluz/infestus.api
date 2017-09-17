@@ -18,7 +18,6 @@ chai.config.includeStack = true;
 // });
 
 describe('## OTHER APIs', () => {
-
   describe('# POST /api/other/feedback', () => {
     it('should block the feedback creation', (done) => {
       request(app)
@@ -31,5 +30,4 @@ describe('## OTHER APIs', () => {
         .catch(done);
     });
   });
-
 });

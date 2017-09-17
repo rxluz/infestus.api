@@ -1,6 +1,7 @@
 import express from 'express';
-import otherCtrl from '../controllers/other.controller';
 import validate from 'express-validation';
+
+import otherCtrl from '../controllers/other.controller';
 import paramOtherValidation from '../requests/other-param-validation';
 
 const router = express.Router(); // eslint-disable-line new-cap
