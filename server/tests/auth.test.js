@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import request from 'supertest-as-promised';
 import httpStatus from 'http-status';
-import chai, { expect } from 'chai';
+import chai from 'chai';
 import app from '../../index';
 
 chai.config.includeStack = true;
@@ -18,20 +18,18 @@ chai.config.includeStack = true;
 // });
 
 describe('## Auth APIs', () => {
-
   describe('# POST /api/auth', () => {
     it('should block the user auth', (done) => {
       request(app)
         .post('/api/auth')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(() => {
           done();
         })
         .catch(done);
     });
   });
-
 
   describe('# POST /api/auth/recover/request', () => {
     it('should block the user recover request', (done) => {
@@ -39,13 +37,12 @@ describe('## Auth APIs', () => {
         .post('/api/auth/recover/request')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
-        .then((res) => {
+        .then(() => {
           done();
         })
         .catch(done);
     });
   });
-
 });
 
 

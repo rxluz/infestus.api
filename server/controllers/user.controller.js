@@ -1,5 +1,3 @@
-// import User from '../models/user.model';
-
 /**
  * Get current user infos
  * @returns {User}
@@ -77,4 +75,13 @@ function disable(req, res) {
 }
 
 
-export default { get, getMedia, getFollowers, getFollowing, create, update, updatePassword, disable };
+export default {
+  get,
+  getMedia,
+  getFollowers,
+  getFollowing,
+  create,
+  update,
+  updatePassword,
+  disable
+};

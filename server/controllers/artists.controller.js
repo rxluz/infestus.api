@@ -1,17 +1,17 @@
 /**
- * Get the list of recent users
- * @returns {Users}
+ * Get the list of recent artists
+ * @returns {artists}
  */
 function recent(req, res) {
-  return res.json({ hello: 'recent' });
+  return res.json({ hello: 'artists_recent' });
 }
 
 /**
- * Get the list of featured users
- * @returns {Users}
+ * Get the list of featured artists
+ * @returns {artists}
  */
 function featured(req, res) {
-  return res.json({ hello: 'featured' });
+  return res.json({ hello: 'artists_featured' });
 }
 
 /**
@@ -19,7 +19,7 @@ function featured(req, res) {
  * @returns {User}
  */
 function about(req, res) {
-  return res.json({ hello: 'about' });
+  return res.json({ hello: 'artists_about' });
 }
 
 /**
@@ -27,7 +27,7 @@ function about(req, res) {
  * @returns {User}
  */
 function medias(req, res) {
-  return res.json({ hello: 'medias' });
+  return res.json({ hello: 'artists_medias' });
 }
 
 /**
@@ -35,7 +35,7 @@ function medias(req, res) {
  * @returns {User}
  */
 function follow(req, res) {
-  return res.json({ hello: 'follow' });
+  return res.json({ hello: 'artists_follow' });
 }
 
 /**
@@ -43,7 +43,7 @@ function follow(req, res) {
  * @returns {User}
  */
 function followDelete(req, res) {
-  return res.json({ hello: 'followDelete' });
+  return res.json({ hello: 'artists_followDelete' });
 }
 
 

@@ -7,15 +7,23 @@ import authCtrl from '../controllers/auth.controller';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-/** POST /api/auth/login - Returns token if correct username and password is provided */
+/**
+  * POST /api/auth/login
+  * Returns token if correct username and password is provided
+  */
 router.route('/')
   .post(validate(paramAuthValidation.login), authCtrl.login);
 
-/** POST /api/auth/recover/request */
+/**
+  * POST /api/auth/recover/request
+  */
 router.route('/recover/request')
   .post(validate(paramAuthValidation.recoverRequest), authCtrl.recoverRequest);
 
-/** GET /api/auth/recover/restore/:code - Return a valid token if the code is valid */
+/**
+  * GET /api/auth/recover/restore/:code
+  * Return a valid token if the code is valid
+  */
 router.route('/recover/restore/:code')
   .get(validate(paramAuthValidation.recoverRestore), authCtrl.recoverRestore);
 

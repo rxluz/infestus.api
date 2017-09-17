@@ -17,31 +17,12 @@ chai.config.includeStack = true;
 //   done();
 // });
 
-describe('## User APIs', () => {
-  const user = {
-    username: 'KK123',
-    mobileNumber: '1234567890'
-  };
+describe('## Media APIs', () => {
 
-  describe('# POST /api/user', () => {
-    it('should block the user creation', (done) => {
+  describe('# POST /api/media', () => {
+    it('should block the media creation', (done) => {
       request(app)
-        .post('/api/user')
-        .send(user)
-        .expect(httpStatus.BAD_REQUEST)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  // cannot test user update in this moment
-
-  describe('# PUT /api/user/password', () => {
-    it('should block the user update password', (done) => {
-      request(app)
-        .put('/api/user/password')
+        .post('/api/media')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then(() => {
@@ -51,10 +32,10 @@ describe('## User APIs', () => {
     });
   });
 
-  describe('# DELETE /api/user', () => {
-    it('should block the user disable account', (done) => {
+  describe('# POST /api/media', () => {
+    it('should block the comment media creation', (done) => {
       request(app)
-        .delete('/api/user')
+        .post('/api/media/123/comments')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then(() => {
@@ -63,4 +44,5 @@ describe('## User APIs', () => {
         .catch(done);
     });
   });
+
 });
