@@ -16,11 +16,24 @@ export default {
     }
   },
 
-
-  // GET /api/auth/recover/restore/{code}
+  // PUT /api/auth/recover/restore/{code}
   recoverRestore: {
     params: {
       code: Joi.string().required()
+    },
+    body: {
+      email: Joi.string().email().required(),
+      password: Joi.string().required()
+    }
+  },
+
+  // GET /api/auth/recover/restore/{code}
+  recoverCheck: {
+    params: {
+      code: Joi.string().required()
+    },
+    body: {
+      email: Joi.string().email().required()
     }
   }
 };

@@ -38,6 +38,10 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
+  },
+  mailgun: {
+    domain: envVars.MAILGUN_DOMAIN,
+    secret: envVars.MAILGUN_SECRET
   }
 };
 

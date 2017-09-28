@@ -2,7 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 
 import otherCtrl from '../controllers/other.controller';
-import paramOtherValidation from '../requests/other-param-validation';
+import otherRequest from '../requests/other.request';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -11,7 +11,7 @@ const router = express.Router(); // eslint-disable-line new-cap
  * Post the user feedback
  */
 router.route('/feedback')
-  .post(validate(paramOtherValidation.createFeedback), otherCtrl.createFeedback);
+  .post(validate(otherRequest.createFeedback), otherCtrl.createFeedback);
 
 
 export default router;

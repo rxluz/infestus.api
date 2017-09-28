@@ -18,29 +18,159 @@ chai.config.includeStack = true;
 // });
 
 describe('## Media APIs', () => {
-  describe('# POST /api/media', () => {
-    it('should block the media creation', (done) => {
-      request(app)
-        .post('/api/media')
-        .send({})
-        .expect(httpStatus.BAD_REQUEST)
-        .then(() => {
-          done();
-        })
-        .catch(done);
+    describe('# POST /api/media', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .post('/api/media')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
     });
-  });
 
-  describe('# POST /api/media', () => {
-    it('should block the comment media creation', (done) => {
-      request(app)
-        .post('/api/media/123/comments')
-        .send({})
-        .expect(httpStatus.BAD_REQUEST)
-        .then(() => {
-          done();
-        })
-        .catch(done);
+    describe('# PUT /api/media/{media-id}', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .put('/api/media/1')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
     });
-  });
+
+    describe('# DELETE /api/media/{media-id}', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .delete('/api/media/1')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# POST /api/media/{media-id}/comments', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .post('/api/media/1/comments')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# DELETE /api/media/{media-id}/comments/{comment-id}', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .delete('/api/media/1/comments/1')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# POST /api/media/{media-id}/comments/{comment-id}/flag', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .post('/api/media/1/comments/1/flag')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# DELETE /api/media/{media-id}/comments/{comment-id}/flag', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .delete('/api/media/1/comments/1/flag')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# POST /api/media/{media-id}/like', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .post('/api/media/1/like')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# DELETE /api/media/{media-id}/like', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .delete('/api/media/1/like')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# GET /api/media/{media-id}/like', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .get('/api/media/1/like')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# POST /api/media/{media-id}/flag', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .post('/api/media/1/flag')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
+
+    describe('# DELETE /api/media/{media-id}/flag', () => {
+      it('should return unauthorized', (done) => {
+        request(app)
+          .delete('/api/media/1/flag')
+          .send({})
+          .expect(httpStatus.UNAUTHORIZED)
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    });
 });

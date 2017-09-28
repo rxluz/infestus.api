@@ -1,13 +1,10 @@
-// import jwt from 'jsonwebtoken';
-// import httpStatus from 'http-status';
-// import APIError from '../helpers/APIError';
-// import config from '../../config/config';
-
-// // sample user, used for authentication
-// const user = {
-//   username: 'react',
-//   password: 'express'
-// };
+import User from '../models/user.model';
+import bcrypt from 'bcrypt';
+import config from '../../config/config';
+import mailgun from 'mailgun-js';
+import Handlebars from 'handlebars';
+import fs from 'fs';
+//var mailgun = require('mailgun-js')({apiKey: 'key-d06654a28701641f760d53e12b6f126e', domain: 'appock.co'});
 
 /**
  * Returns jwt token if valid username and password is provided
@@ -18,23 +15,35 @@
  */
 // function login(req, res, next) {
 function login(req, res) {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
+  User
+  .findByCredentials(req.body.nickname, req.body.password)
+  .then((user) => {
+    return user.generateAuthToken().then((token) => {
+      res.header('x-auth', token).send(user);
+    });
+  })
+  .catch((e) => {
+    res.status(401).send();
+  });
 
-  return res.json({ hello: 'login' });
+}
 
-  // if (req.body.username === user.username && req.body.password === user.password) {
-  //   const token = jwt.sign({
-  //     username: user.username
-  //   }, config.jwtSecret);
-  //   return res.json({
-  //     token,
-  //     username: user.username
-  //   });
-  // }
-  //
-  // const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-  // return next(err);
+
+/**
+ * Delete the user token
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function logout(req, res) {
+  User.removeByToken(req.token)
+  .then((u) => {
+    res.status(200).send(u);
+  })
+  .catch(() => {
+    res.status(400).send();
+  });
 }
 
 /**
@@ -45,10 +54,33 @@ function login(req, res) {
  * @returns {*}
  */
 function recoverRequest(req, res) {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
 
-  return res.json({ hello: 'recoverRequest' });
+  const mg=mailgun({apiKey: config.mailgun.secret, domain: config.mailgun.domain});
+  const recoverEmailTemplate=fs.readFileSync("server/views/emails/auth.recover.request.html", 'utf-8');
+  const template = Handlebars.compile(recoverEmailTemplate);
+
+  User
+    .generateRecoverToken(req.body.email)
+    .then((token) => {
+      const data = {
+        from: 'Infestus Team <hello@appock.co>',
+        to: req.body.email,
+        subject: `Utilize ${token} para restaurar sua senha no Infestus`,
+        html: template({token})
+      };
+
+      mg.messages().send(data, function (error, body) {
+        if(error) return res.status(400).send(error);
+
+        return res.status(200).send();
+      });
+    })
+    .catch(() => {
+      res.status(401).send();
+    });
+
+
+
 }
 
 /**
@@ -59,10 +91,33 @@ function recoverRequest(req, res) {
  * @returns {*}
  */
 function recoverRestore(req, res) {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
+  User
+    .setRecoverPassword(req.params.code, req.body.email, req.body.password)
+    .then((token) => {
+      res.header('x-auth', token).status(200).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    });
+}
 
-  return res.json({ hello: 'recoverRestore' });
+
+/**
+ * Check the code
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+function recoverCheck(req, res) {
+  User
+    .checkRecoverToken(req.params.code, req.body.email)
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch(() => {
+      res.status(401).send();
+    });
 }
 
 /**
@@ -72,11 +127,10 @@ function recoverRestore(req, res) {
  * @returns {*}
  */
 function getRandomNumber(req, res) {
-  // req.user is assigned by jwt middleware if valid token is provided
   return res.json({
     user: req.user,
     num: Math.random() * 100
   });
 }
 
-export default { login, getRandomNumber, recoverRequest, recoverRestore };
+export default { login, logout, getRandomNumber, recoverRequest, recoverRestore, recoverCheck };

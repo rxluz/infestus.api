@@ -1,9 +1,15 @@
+import _ from 'lodash';
+import bcrypt from 'bcrypt';
+
+import User from '../models/user.model';
+
+
 /**
  * Get current user infos
  * @returns {User}
  */
 function get(req, res) {
-  return res.json({ hello: 'getinfo' });
+  return res.json(req.user);
 }
 
 /**
@@ -38,7 +44,16 @@ function getFollowing(req, res) {
  * @returns {User}
  */
 function create(req, res) {
-  return res.json({ hello: 'create' });
+  //console.log(req.body);
+  var body = _.pick( req.body, ['nickname', 'email', 'password'] );
+
+  var user = new User (body);
+
+  user
+  .save()
+  .then(() => { return user.generateAuthToken(); })
+  .then((token) => { res.header('x-auth', token).send(user); })
+  .catch((e) => { res.status(400).send(e); });
 }
 
 /**
@@ -49,7 +64,13 @@ function create(req, res) {
  * @returns {User}
  */
 function update(req, res) {
-  return res.json({ hello: 'update' });
+  var body = _.pick( req.body, ['nickname', 'email', 'bio'] );
+
+  req.user.set(body).save((err, doc) => {
+    if(err) res.status(400).send(err);
+
+    res.send(doc);
+  });
 }
 
 /**
@@ -59,7 +80,15 @@ function update(req, res) {
  * @returns {User}
  */
 function updatePassword(req, res) {
-  return res.json({ hello: 'updatePassword' });
+  bcrypt.compare(req.body.current_password, req.user.password, function(err, rs) {
+      if(!rs) return res.status(401).send(err);
+
+      req.user.set({password:req.body.new_password}).save((err, doc) => {
+        if(err) res.status(400).send(err);
+
+        res.send(doc);
+      });
+  });
 }
 
 
@@ -71,7 +100,15 @@ function updatePassword(req, res) {
  * @returns {User}
  */
 function disable(req, res) {
-  return res.json({ hello: 'disable' });
+  bcrypt.compare(req.body.password, req.user.password, function(err, rs) {
+      if(!rs) return res.status(401).send(err);
+
+      req.user.set({active:false}).save((err, doc) => {
+        if(err) res.status(400).send(err);
+
+        res.send(doc);
+      });
+  });
 }
 
 

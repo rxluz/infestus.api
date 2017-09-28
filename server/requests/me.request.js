@@ -6,7 +6,7 @@ export default {
     body: {
       nickname: Joi.string().required(),
       email: Joi.string().email().required(),
-      password: Joi.string().required()
+      password: Joi.string().min(4).required()
     }
   },
 
@@ -23,7 +23,7 @@ export default {
   updatePassword: {
     body: {
       current_password: Joi.string().required(),
-      new_password: Joi.string().email().required()
+      new_password: Joi.string().min(4).required()
     }
   },
 
@@ -31,7 +31,8 @@ export default {
   // DELETE /api/user
   disable: {
     body: {
-      password: Joi.string().required()
+      password: Joi.string().required(),
+      reason: Joi.string()
     }
   }
 };

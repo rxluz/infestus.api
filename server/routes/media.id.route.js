@@ -1,7 +1,8 @@
 import express from 'express';
 import validate from 'express-validation';
-import paramMediaValidation from '../requests/media-param-validation';
+import mediaRequest from '../requests/media.request';
 import mediaCtrl from '../controllers/media.controller';
+import {authenticate} from '../middlewares/authenticate.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -15,12 +16,12 @@ router.route('/')
     * PUT /api/media/{media-id}
     * Update selected media
     */
-  .put(validate(paramMediaValidation.update), mediaCtrl.update)
+  .put(authenticate, validate(mediaRequest.update), mediaCtrl.update)
   /**
     * DELETE /api/media/{media-id}
     * Delete selected media
     */
-  .delete(mediaCtrl.remove);
+  .delete(authenticate, mediaCtrl.remove);
 
 router.route('/comments')
   /**
@@ -32,53 +33,54 @@ router.route('/comments')
    * POST /api/media/{media-id}/commments
    * Post a commment in selected media
    */
-  .post(validate(paramMediaValidation.createComment), mediaCtrl.createComment);
+  .post(authenticate, validate(mediaRequest.createComment), mediaCtrl.createComment);
 
 /**
   * DELETE /api/media/{media-id}/comments
   * Removes a comment from selected media
   */
-router.route('/comments/:commentID').delete(mediaCtrl.removeComment);
+router.route('/comments/:commentID')
+  .delete(authenticate, mediaCtrl.removeComment);
 
 router.route('/comments/:commentID/flag')
   /**
    * POST /api/media/{media-id}/comments/{comment-id}/flag
    * Flag a comment from selected media
    */
-  .post(mediaCtrl.createCommentFlag)
+  .post(authenticate, mediaCtrl.createCommentFlag)
   /**
    * DELETE /api/media/{media-id}/comments/{comment-id}/flag
    * Removes flag a comment from selected media
    */
-  .delete(mediaCtrl.removeCommentFlag);
+  .delete(authenticate, mediaCtrl.removeCommentFlag);
 
 router.route('/like')
   /**
    * GET /api/media/{media-id}/comments/{comment-id}/like -
    * List the likes from selected media
    */
-  .get(mediaCtrl.getLike)
+  .get(authenticate, mediaCtrl.getLike)
   /**
    * POST /api/media/{media-id}/comments/{comment-id}/like
    * Like a comment from selected media
    */
-  .post(mediaCtrl.createLike)
+  .post(authenticate, mediaCtrl.createLike)
   /**
    * DELETE /api/media/{media-id}/comments/{comment-id}/like
    * Removes a like in a comment from selected media
    */
-  .delete(mediaCtrl.removeLike);
+  .delete(authenticate, mediaCtrl.removeLike);
 
 router.route('/flag')
   /**
     * POST /api/media/{media-id}/flag
     * Post a flag in selected media
     */
-  .post(mediaCtrl.createFlag)
+  .post(authenticate, mediaCtrl.createFlag)
   /**
    * DELETE /api/media/{media-id}/flag
    * Post a flag in selected media
    */
-  .delete(mediaCtrl.removeFlag);
+  .delete(authenticate, mediaCtrl.removeFlag);
 
 export default router;

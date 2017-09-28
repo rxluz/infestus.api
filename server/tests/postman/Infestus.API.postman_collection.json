@@ -8,18 +8,166 @@
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "auth",
+			"description": "",
+			"item": [
+				{
+					"name": "/login",
+					"request": {
+						"url": "http://localhost:4040/api/auth/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nickname",
+									"value": "rxluz",
+									"type": "text",
+									"description": ""
+								},
+								{
+									"key": "password",
+									"value": "kjsdhfjkdshfjdsf",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/logout",
+					"request": {
+						"url": "http://localhost:4040/api/auth/logout",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "x-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWM5NzM2YjBjOTc4YTA4N2RkMGVmNDIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2Mzc1MjQzfQ.jb_cNvgcTDA67X5AFrsf8_7kBR_o6dgqqHGZg6VDb2c",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/recover/request",
+					"request": {
+						"url": "http://localhost:4040/api/auth/recover/request",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rxluz@yahoo.com",
+									"type": "text",
+									"description": ""
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/recover/check/{code}",
+					"request": {
+						"url": "http://localhost:4040/api/auth/recover/check/60021",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rxluz@yahoo.com",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				},
+				{
+					"name": "/recover/restore/{code}",
+					"request": {
+						"url": "http://localhost:4040/api/auth/recover/restore/27207",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "kjsdhfjkdshfjdsf",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "rxluz@yahoo.com",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": "List the user basic infos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "me",
 			"description": "",
 			"item": [
 				{
 					"name": "/",
 					"request": {
-						"url": "http://localhost:4040/api/user",
+						"url": "http://localhost:4040/api/me",
 						"method": "GET",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token_user}}",
+								"key": "x-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWM5NzM2YjBjOTc4YTA4N2RkMGVmNDIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2NDY0NjI3fQ.5n9S7a6vWmq-R-sKob0PdjbueiWQ-MWKL7nqAoqRqmc",
 								"description": ""
 							}
 						],
@@ -31,7 +179,7 @@
 				{
 					"name": "/media",
 					"request": {
-						"url": "http://localhost:4040/api/user/media",
+						"url": "http://localhost:4040/api/me/media",
 						"method": "GET",
 						"header": [
 							{
@@ -48,7 +196,7 @@
 				{
 					"name": "/followers",
 					"request": {
-						"url": "http://localhost:4040/api/user/followers",
+						"url": "http://localhost:4040/api/me/followers",
 						"method": "GET",
 						"header": [
 							{
@@ -65,7 +213,7 @@
 				{
 					"name": "/following",
 					"request": {
-						"url": "http://localhost:4040/api/user/following",
+						"url": "http://localhost:4040/api/me/following",
 						"method": "GET",
 						"header": [
 							{
@@ -82,7 +230,7 @@
 				{
 					"name": "/",
 					"request": {
-						"url": "http://localhost:4040/api/user",
+						"url": "http://localhost:4040/api/me",
 						"method": "POST",
 						"header": [
 							{
@@ -93,7 +241,8 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer {{token_user}}",
-								"description": ""
+								"description": "",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -101,13 +250,13 @@
 							"urlencoded": [
 								{
 									"key": "nickname",
-									"value": "rxluz",
+									"value": "rxluz)",
 									"type": "text",
 									"description": ""
 								},
 								{
 									"key": "email",
-									"value": "rx@appock.co",
+									"value": "{{$randomInt}}rx@appock.co",
 									"type": "text",
 									"description": ""
 								},
@@ -126,17 +275,17 @@
 				{
 					"name": "/",
 					"request": {
-						"url": "http://localhost:4040/api/user",
+						"url": "https://api.infestus.cc/api/me",
 						"method": "PUT",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token_user}}",
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
 								"description": ""
 							},
 							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
+								"key": "x-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWNjMTNjOTI1YzlkZTk5NTgzNTFiMDUiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2NTQ2NjMzfQ.38M2sF2mQth0p244DK66q93jWjuZdS8YFBpSONBByZk",
 								"description": ""
 							}
 						],
@@ -151,13 +300,13 @@
 								},
 								{
 									"key": "email",
-									"value": "rx@appock.co",
+									"value": "{{$randomInt}}rx@appock.co",
 									"type": "text",
 									"description": ""
 								},
 								{
 									"key": "bio",
-									"value": "sdfnsdbfksdf",
+									"value": "sdfnsdbfksdfEDIT",
 									"description": "",
 									"type": "text"
 								}
@@ -170,12 +319,12 @@
 				{
 					"name": "/password",
 					"request": {
-						"url": "http://localhost:4040/api/user/password",
+						"url": "http://localhost:4040/api/me/password",
 						"method": "PUT",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token_user}}",
+								"key": "x-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWMwMjY3ODZiN2UzYTBlNWI4ZTljM2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA1NzY0OTg0fQ.6OTfPji4ylChj52mW7WBrO0E1jI8sBVATf7-D0_EEHE",
 								"description": ""
 							},
 							{
@@ -189,13 +338,13 @@
 							"urlencoded": [
 								{
 									"key": "current_password",
-									"value": "rxluz",
+									"value": "rx@appock.co",
 									"type": "text",
 									"description": ""
 								},
 								{
 									"key": "new_password",
-									"value": "rx@appock.co",
+									"value": "dsfdsfsd",
 									"type": "text",
 									"description": ""
 								}
@@ -208,12 +357,12 @@
 				{
 					"name": "/",
 					"request": {
-						"url": "http://localhost:4040/api/user",
+						"url": "http://localhost:4040/api/me",
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token_user}}",
+								"key": "x-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWMyNDdhYTIxZGQ5NzA4YjJmN2M1NDgiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA1OTA0NTU0fQ._-0f-xUIHtK48uIg3WUwkz75thHT7f2CF6ceEsO38zE",
 								"description": ""
 							},
 							{
@@ -239,83 +388,6 @@
 								}
 							]
 						},
-						"description": "List the user basic infos"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "auth",
-			"description": "",
-			"item": [
-				{
-					"name": "/",
-					"request": {
-						"url": "http://localhost:4040/api/auth",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "nickname",
-									"value": "rxluz",
-									"type": "text",
-									"description": ""
-								},
-								{
-									"key": "password",
-									"value": "skjdhskjdh",
-									"type": "text",
-									"description": ""
-								}
-							]
-						},
-						"description": "List the user basic infos"
-					},
-					"response": []
-				},
-				{
-					"name": "/recover/request",
-					"request": {
-						"url": "http://localhost:4040/api/auth/recover/request",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "rxluz@ssad.com",
-									"type": "text",
-									"description": ""
-								}
-							]
-						},
-						"description": "List the user basic infos"
-					},
-					"response": []
-				},
-				{
-					"name": "/recover/restore/{code}",
-					"request": {
-						"url": "http://localhost:4040/api/auth/recover/restore/{code}",
-						"method": "GET",
-						"header": [],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []

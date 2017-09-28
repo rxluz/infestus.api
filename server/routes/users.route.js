@@ -1,6 +1,4 @@
 import express from 'express';
-// import validate from 'express-validation';
-// import paramUsersValidation from '../requests/users-param-validation';
 import usersCtrl from '../controllers/users.controller';
 
 import usersIDRoutes from './users.id.route';

@@ -2,7 +2,8 @@ import express from 'express';
 import validate from 'express-validation';
 import mediaCtrl from '../controllers/media.controller';
 import mediaIDRoutes from './media.id.route';
-import paramMediaValidation from '../requests/media-param-validation';
+import mediaRequest from '../requests/media.request';
+import {authenticate} from '../middlewares/authenticate.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -17,7 +18,7 @@ router.route('/featured').get(mediaCtrl.featured);
  * Post a new media
  */
 router.route('/')
-  .post(validate(paramMediaValidation.create), mediaCtrl.create);
+  .post(authenticate, validate(mediaRequest.create), mediaCtrl.create);
 
 // mount user routes at /artists
 router.use('/:mediaID', mediaIDRoutes);
