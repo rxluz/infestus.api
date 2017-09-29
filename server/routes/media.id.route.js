@@ -2,7 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 import mediaRequest from '../requests/media.request';
 import mediaCtrl from '../controllers/media.controller';
-import {authenticate} from '../middlewares/authenticate.middleware';
+import authenticate from '../middlewares/authenticate.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 

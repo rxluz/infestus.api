@@ -1,10 +1,10 @@
-const auxs=
-{
-  getRandomInt: (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-  }
-};
+const auxs =
+  {
+    getRandomInt: (min, max) =>
+      Math.floor(
+        Math.random() *
+        (Math.floor(max) - Math.ceil(min))
+      ) + Math.ceil(min)
+  };
 
-export {auxs};
+export { auxs as default };

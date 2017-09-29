@@ -1,18 +1,11 @@
 import Promise from 'bluebird';
 import mongoose from 'mongoose';
-import httpStatus from 'http-status';
-import validate from 'express-validation';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 
-import {auxs} from '../helpers/auxs.helper';
-
+import auxs from '../helpers/auxs.helper';
 import config from '../../config/config';
-
-import APIError from '../helpers/APIError';
-
-
 
 /**
  * User Schema
@@ -59,33 +52,27 @@ const UserSchema = new mongoose.Schema({
   }]
 });
 
-
-UserSchema.methods.toJSON = function() {
-  var user = this;
-  var userObject = user.toObject();
+UserSchema.methods.toJSON = function toJSON() {
+  const user = this;
+  const userObject = user.toObject();
 
   return _.pick(userObject, ['_id', 'email', 'nickname', 'bio']);
 };
 
-UserSchema.methods.generateAuthToken = function() {
-
-  var user = this;
-  var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, config.jwtSecret).toString();
+UserSchema.methods.generateAuthToken = function generateAuthToken() {
+  const user = this;
+  const access = 'auth';
+  const token = jwt.sign({ _id: user._id.toHexString(), access }, config.jwtSecret).toString();
 
   user.tokens.push({ access, token });
 
-  return user.save().then(() => {
-    return token;
-  });
-
+  return user.save().then(() => token);
 };
 
-UserSchema.statics.generateRecoverToken = function (email) {
-  var User = this;
-
-  return User.findOne({email, active: true}).then((user) => {
-    if(!user){
+UserSchema.statics.generateRecoverToken = function generateRecoverToken(email) {
+  const User = this;
+  return User.findOne({ email, active: true }).then((user) => {
+    if (!user) {
       return Promise.reject();
     }
 
@@ -99,113 +86,110 @@ UserSchema.statics.generateRecoverToken = function (email) {
   });
 };
 
-UserSchema.statics.checkRecoverToken = function (token, email) {
-  var User = this;
+UserSchema.statics.checkRecoverToken = function checkRecoverToken(token, email) {
+  const User = this;
 
   return User
-          .findOne({email, 'tokens.token':token, 'tokens.access': 'recover'})
-          .then((user) => {
-            return new Promise((resolve, reject) => {
-              if(!user){
-                reject();
-              }else{
-                resolve();
-              }
-            });
-          });
+    .findOne({ email, 'tokens.token': token, 'tokens.access': 'recover' })
+    .then(
+      user =>
+        new Promise((resolve, reject) => {
+          if (!user) {
+            reject();
+          } else {
+            resolve();
+          }
+        })
+    );
 };
 
-UserSchema.statics.setRecoverPassword = function (token, email, password) {
-  var User = this;
+UserSchema.statics.setRecoverPassword = function setRecoverPassword(token, email, password) {
+  const User = this;
 
   return User
-          .findOne({email, 'tokens.token':token, 'tokens.access': 'recover'})
-          .then((user) => {
-            if(!user){
-              return Promise.reject();
-            }
-
-            user.password = password;
-            user.tokens = user.tokens.filter(tkn => tkn.token !== token);
-            user.save();
-
-            return user.generateAuthToken().then((newtoken) => {
-              return Promise.resolve(newtoken);
-            });
-
-          });
-};
-
-
-UserSchema.statics.findByToken = function (token) {
-  var User = this;
-  var decoded;
-
-  try {
-    decoded = jwt.verify(token, config.jwtSecret);
-  } catch (e) {
-    return Promise.reject();
-  }
-
-  return User.findOne({
-    '_id': decoded._id,
-    'active': true,
-    'tokens.token': token,
-    'tokens.access': 'auth'
-  });
-};
-
-UserSchema.statics.findByCredentials = function (nickname, password) {
-    var User = this;
-    return User.findOne({nickname, active: true}).then((user) => {
-      if(!user){
+    .findOne({ email, 'tokens.token': token, 'tokens.access': 'recover' })
+    .then((user) => {
+      if (!user) {
         return Promise.reject();
       }
 
-      return new Promise((resolve, reject) => {
-        bcrypt.compare(password, user.password, (err, res) => {
-          if(res){
-            resolve(user);
-          } else {
-            reject();
-          }
-        });
-      });
+      const usr = user;
+
+      usr.password = password;
+      usr.tokens = usr.tokens.filter(tkn => tkn.token !== token);
+      usr.save();
+
+      return usr.generateAuthToken().then(newtoken => Promise.resolve(newtoken));
     });
 };
 
-UserSchema.statics.removeByToken = function (token) {
-    var User = this;
+UserSchema.statics.findByToken = function findByToken(token) {
+  const User = this;
 
-    return User.findOne({'tokens.token': token}).then((user) => {
-        if(!user){
-          return Promise.reject();
-        }
+  try {
+    const decoded = jwt.verify(token, config.jwtSecret);
 
-        user.tokens = user.tokens.filter(tkn => tkn.token !== token);
-
-        user.save();
-
-        return Promise.resolve(user);
+    return User.findOne({
+      _id: decoded._id,
+      active: true,
+      'tokens.token': token,
+      'tokens.access': 'auth'
     });
-
+  } catch (e) {
+    return Promise.reject();
+  }
 };
 
-UserSchema.pre('save', function(next) {
-  var user = this;
+UserSchema.statics.findByCredentials = function findByCredentials(nickname, password) {
+  const User = this;
+  return User.findOne({ nickname, active: true }).then((user) => {
+    if (!user) {
+      return Promise.reject();
+    }
 
-  if (user.isModified('password')) {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(user.password, salt, (err, hash) => {
+    return new Promise(
+      (resolve, reject) =>
+        bcrypt.compare(
+          password, user.password,
+          (err, res) => (res ? resolve(user) : reject())
+        )
+    );
+  });
+};
+
+UserSchema.statics.removeByToken = function removeByToken(token) {
+  const User = this;
+
+  return User.findOne({ 'tokens.token': token }).then((user) => {
+    if (!user) {
+      return Promise.reject();
+    }
+
+    const usr = user;
+
+    usr.tokens = usr.tokens.filter(tkn => tkn.token !== token);
+    usr.save();
+    return Promise.resolve(usr);
+  });
+};
+
+UserSchema.pre('save', function pre(next) {
+  const user = this;
+
+  if (!user.isModified('password')) {
+    next();
+  } else {
+    bcrypt.genSalt(10, (err, salt) =>
+      bcrypt.hash(user.password, salt, (errr, hash) => {
         user.password = hash;
         next();
-      });
-    });
-  } else {
-    next();
+        return true;
+      })
+    );
   }
-});
 
+  return true;
+});
 
 /**
  * @typedef User

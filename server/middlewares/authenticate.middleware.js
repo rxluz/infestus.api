@@ -1,20 +1,19 @@
 import User from '../models/user.model';
 
-var  authenticate = (req, res, next) => {
-  var token = req.header('x-auth');
+const authenticate = (req, res, next) => {
+  const token = req.header('x-auth');
 
   User.findByToken(token).then((user) => {
-    if(!user){
+    if (!user) {
       return Promise.reject();
     }
 
-    req.user=user;
-    req.token=token;
+    req.user = user;
+    req.token = token;
     next();
-  }).catch((e) => {
-    res.status(401).send();
-  });
+
+    return true;
+  }).catch(() => res.status(401).send());
 };
 
-
-export {authenticate};
+export { authenticate as default };

@@ -18,10 +18,10 @@ chai.config.includeStack = true;
 // });
 
 describe('## Auth APIs', () => {
-  describe('# POST /api/auth', () => {
+  describe('# POST /api/auth/login', () => {
     it('should block the user auth', (done) => {
       request(app)
-        .post('/api/auth')
+        .post('/api/auth/login')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then(() => {

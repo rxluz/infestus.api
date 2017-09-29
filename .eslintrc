@@ -7,6 +7,7 @@
         "SwitchCase": 1
       }
     ],
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["res", "req"] }],
     "space-before-function-paren": [
       2,
       {

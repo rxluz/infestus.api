@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
-
 import User from '../models/user.model';
-
 
 /**
  * Get current user infos
@@ -44,16 +42,14 @@ function getFollowing(req, res) {
  * @returns {User}
  */
 function create(req, res) {
-  //console.log(req.body);
-  var body = _.pick( req.body, ['nickname', 'email', 'password'] );
-
-  var user = new User (body);
+  const body = _.pick(req.body, ['nickname', 'email', 'password']);
+  const user = new User(body);
 
   user
-  .save()
-  .then(() => { return user.generateAuthToken(); })
-  .then((token) => { res.header('x-auth', token).send(user); })
-  .catch((e) => { res.status(400).send(e); });
+    .save()
+    .then(() => user.generateAuthToken())
+    .then(token => res.header('x-auth', token).send(user))
+    .catch(e => res.status(400).send(e));
 }
 
 /**
@@ -64,13 +60,11 @@ function create(req, res) {
  * @returns {User}
  */
 function update(req, res) {
-  var body = _.pick( req.body, ['nickname', 'email', 'bio'] );
+  const body = _.pick(req.body, ['nickname', 'email', 'bio']);
 
-  req.user.set(body).save((err, doc) => {
-    if(err) res.status(400).send(err);
-
-    res.send(doc);
-  });
+  req.user
+    .set(body)
+    .save((err, doc) => (err ? res.status(400).send(err) : res.send(doc)));
 }
 
 /**
@@ -80,17 +74,16 @@ function update(req, res) {
  * @returns {User}
  */
 function updatePassword(req, res) {
-  bcrypt.compare(req.body.current_password, req.user.password, function(err, rs) {
-      if(!rs) return res.status(401).send(err);
+  return bcrypt.compare(req.body.current_password, req.user.password, (err, rs) => {
+    if (!rs) return res.status(401).send(err);
 
-      req.user.set({password:req.body.new_password}).save((err, doc) => {
-        if(err) res.status(400).send(err);
+    return req.user.set({ password: req.body.new_password }).save((errr, doc) => {
+      if (errr) return res.status(400).send(errr);
 
-        res.send(doc);
-      });
+      return res.send(doc);
+    });
   });
 }
-
 
 /**
  * Disable current user.
@@ -100,17 +93,16 @@ function updatePassword(req, res) {
  * @returns {User}
  */
 function disable(req, res) {
-  bcrypt.compare(req.body.password, req.user.password, function(err, rs) {
-      if(!rs) return res.status(401).send(err);
+  return bcrypt.compare(req.body.password, req.user.password, (err, rs) => {
+    if (!rs) return res.status(401).send(err);
 
-      req.user.set({active:false}).save((err, doc) => {
-        if(err) res.status(400).send(err);
+    return req.user.set({ active: false }).save((errr, doc) => {
+      if (errr) return res.status(400).send(errr);
 
-        res.send(doc);
-      });
+      return res.send(doc);
+    });
   });
 }
-
 
 export default {
   get,

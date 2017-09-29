@@ -1,10 +1,9 @@
-import User from '../models/user.model';
-import bcrypt from 'bcrypt';
-import config from '../../config/config';
 import mailgun from 'mailgun-js';
 import Handlebars from 'handlebars';
 import fs from 'fs';
-//var mailgun = require('mailgun-js')({apiKey: 'key-d06654a28701641f760d53e12b6f126e', domain: 'appock.co'});
+
+import User from '../models/user.model';
+import config from '../../config/config';
 
 /**
  * Returns jwt token if valid username and password is provided
@@ -16,16 +15,9 @@ import fs from 'fs';
 // function login(req, res, next) {
 function login(req, res) {
   User
-  .findByCredentials(req.body.nickname, req.body.password)
-  .then((user) => {
-    return user.generateAuthToken().then((token) => {
-      res.header('x-auth', token).send(user);
-    });
-  })
-  .catch((e) => {
-    res.status(401).send();
-  });
-
+    .findByCredentials(req.body.nickname, req.body.password)
+    .then(user => user.generateAuthToken().then(token => res.header('x-auth', token).send(user)))
+    .catch(() => res.status(401).send());
 }
 
 
@@ -38,12 +30,8 @@ function login(req, res) {
  */
 function logout(req, res) {
   User.removeByToken(req.token)
-  .then((u) => {
-    res.status(200).send(u);
-  })
-  .catch(() => {
-    res.status(400).send();
-  });
+    .then(u => res.status(200).send(u))
+    .catch(() => res.status(400).send());
 }
 
 /**
@@ -54,9 +42,8 @@ function logout(req, res) {
  * @returns {*}
  */
 function recoverRequest(req, res) {
-
-  const mg=mailgun({apiKey: config.mailgun.secret, domain: config.mailgun.domain});
-  const recoverEmailTemplate=fs.readFileSync("server/views/emails/auth.recover.request.html", 'utf-8');
+  const mg = mailgun({ apiKey: config.mailgun.secret, domain: config.mailgun.domain });
+  const recoverEmailTemplate = fs.readFileSync('server/views/emails/auth.recover.request.html', 'utf-8');
   const template = Handlebars.compile(recoverEmailTemplate);
 
   User
@@ -66,11 +53,11 @@ function recoverRequest(req, res) {
         from: 'Infestus Team <hello@appock.co>',
         to: req.body.email,
         subject: `Utilize ${token} para restaurar sua senha no Infestus`,
-        html: template({token})
+        html: template({ token })
       };
 
-      mg.messages().send(data, function (error, body) {
-        if(error) return res.status(400).send(error);
+      mg.messages().send(data, (error) => {
+        if (error) return res.status(400).send(error);
 
         return res.status(200).send();
       });
@@ -78,9 +65,6 @@ function recoverRequest(req, res) {
     .catch(() => {
       res.status(401).send();
     });
-
-
-
 }
 
 /**
@@ -93,14 +77,9 @@ function recoverRequest(req, res) {
 function recoverRestore(req, res) {
   User
     .setRecoverPassword(req.params.code, req.body.email, req.body.password)
-    .then((token) => {
-      res.header('x-auth', token).status(200).send();
-    })
-    .catch(() => {
-      res.status(401).send();
-    });
+    .then(token => res.header('x-auth', token).status(200).send())
+    .catch(() => res.status(401).send());
 }
-
 
 /**
  * Check the code

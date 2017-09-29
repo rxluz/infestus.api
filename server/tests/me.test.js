@@ -3,7 +3,7 @@ import request from 'supertest-as-promised';
 import httpStatus from 'http-status';
 import chai from 'chai';
 import app from '../../index';
-import {auxs} from '../helpers/auxs.helper';
+import auxs from '../helpers/auxs.helper';
 
 chai.config.includeStack = true;
 
@@ -19,9 +19,11 @@ chai.config.includeStack = true;
 // });
 
 describe('## ME APIs', () => {
+  const nickname = `KK123${auxs.getRandomInt(1, 1000)}`;
+  const email = `${auxs.getRandomInt(1, 1000)}@email.com`;
   const user = {
-    nickname: 'KK123' + auxs.getRandomInt(1, 1000),
-    email: auxs.getRandomInt(1, 1000) + '@email.com',
+    nickname,
+    email,
     password: '1234567890'
   };
 
@@ -143,8 +145,6 @@ describe('## ME APIs', () => {
         .catch(done);
     });
   });
-
-
 
   //
   // describe('# PUT /api/me/password', () => {

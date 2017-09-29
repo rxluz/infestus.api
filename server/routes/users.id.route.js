@@ -1,6 +1,6 @@
 import express from 'express';
 import usersCtrl from '../controllers/users.controller';
-import {authenticate} from '../middlewares/authenticate.middleware';
+import authenticate from '../middlewares/authenticate.middleware';
 
 
 const router = express.Router(); // eslint-disable-line new-cap
