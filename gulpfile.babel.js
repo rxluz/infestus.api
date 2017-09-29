@@ -3,6 +3,8 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import path from 'path';
 import del from 'del';
 import runSequence from 'run-sequence';
+var coveralls = require('gulp-coveralls');
+
 
 const plugins = gulpLoadPlugins();
 
@@ -23,6 +25,13 @@ gulp.task('copy', () =>
   gulp.src(paths.nonJs)
     .pipe(plugins.newer('dist'))
     .pipe(gulp.dest('dist'))
+);
+
+
+// Copy non-js files to dist
+gulp.task('coveralls', () =>
+  gulp.src('coverage/**/lcov.info')
+    .pipe(coveralls())
 );
 
 // Copy views files to dist
