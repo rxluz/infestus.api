@@ -30,8 +30,8 @@ function login(req, res) {
  */
 function logout(req, res) {
   User.removeByToken(req.token)
-  .then(u => res.status(200).send(u))
-  .catch(() => res.status(400).send());
+    .then(u => res.status(200).send(u))
+    .catch(() => res.status(400).send());
 }
 
 /**
