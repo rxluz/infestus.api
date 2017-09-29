@@ -16,7 +16,7 @@ import config from '../../config/config';
 function login(req, res) {
   User
     .findByCredentials(req.body.nickname, req.body.password)
-    .then(user => user.generateAuthToken().then(token => res.header('x-auth', token).send(user)))
+    .then(user => user.generateAuthToken().then(token => res.header('x-auth', token).send({ token, user })))
     .catch(() => res.status(401).send());
 }
 
@@ -30,8 +30,8 @@ function login(req, res) {
  */
 function logout(req, res) {
   User.removeByToken(req.token)
-    .then(u => res.status(200).send(u))
-    .catch(() => res.status(400).send());
+  .then(u => res.status(200).send(u))
+  .catch(() => res.status(400).send());
 }
 
 /**
