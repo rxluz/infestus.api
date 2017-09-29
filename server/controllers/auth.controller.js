@@ -77,7 +77,7 @@ function recoverRequest(req, res) {
 function recoverRestore(req, res) {
   User
     .setRecoverPassword(req.params.code, req.body.email, req.body.password)
-    .then(token => res.header('x-auth', token).status(200).send())
+    .then(token => res.header('x-auth', token).status(200).send({ token }))
     .catch(() => res.status(401).send());
 }
 
