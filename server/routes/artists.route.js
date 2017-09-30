@@ -13,6 +13,13 @@ router.route('/recent')
   .get(artistsCtrl.recent);
 
 /**
+  * GET /api/artists/recent
+  * Get a list of recent artists
+  */
+router.route('/complete/:term')
+  .get(artistsCtrl.complete);
+
+/**
   * GET /api/artists/featured
   * Get a list of featured artists
   */

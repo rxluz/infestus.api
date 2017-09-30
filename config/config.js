@@ -42,6 +42,12 @@ const config = {
   mailgun: {
     domain: envVars.MAILGUN_DOMAIN,
     secret: envVars.MAILGUN_SECRET
+  },
+
+  cloudinary: {
+    cloud_name: envVars.CLOUDINARY_NAME,
+    api_key: envVars.CLOUDINARY_KEY,
+    api_secret: envVars.CLOUDINARY_SECRET
   }
 };
 

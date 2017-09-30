@@ -3,8 +3,8 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import path from 'path';
 import del from 'del';
 import runSequence from 'run-sequence';
-var coveralls = require('gulp-coveralls');
 
+const coveralls = require('gulp-coveralls');
 
 const plugins = gulpLoadPlugins();
 

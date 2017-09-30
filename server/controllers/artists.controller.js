@@ -1,9 +1,26 @@
+import Artist from '../models/artist.model';
+
 /**
  * Get the list of recent artists
  * @returns {artists}
  */
 function recent(req, res) {
-  return res.json({ hello: 'artists_recent' });
+  return res.json({ hello: 'recent' });
+}
+
+/**
+ * Autocomplete artists name
+ * @returns {artists}
+ */
+function complete(req, res) {
+  console.log(req.params.term);
+
+  return Artist
+  .find({ name:  { $regex: '.*' + req.params.term.toLowerCase() + '.*' } })
+  .select('name')
+  .limit(10)
+  .then(artist => res.send(artist));
+
 }
 
 /**
@@ -47,4 +64,4 @@ function followDelete(req, res) {
 }
 
 
-export default { recent, featured, about, medias, follow, followDelete };
+export default { recent, complete,  featured, about, medias, follow, followDelete };
