@@ -60,7 +60,7 @@ function create(req, res) {
  * @returns {User}
  */
 function update(req, res) {
-  const body = _.pick(req.body, ['nickname', 'email', 'bio']);
+  const body = _.pick(req.body, ['nickname', 'email', 'bio', 'picture']);
 
   req.user
     .set(body)

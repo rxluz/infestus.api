@@ -3,9 +3,18 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import cloudinary from 'cloudinary';
 
 import auxs from '../helpers/auxs.helper';
 import config from '../../config/config';
+
+
+cloudinary.config({
+  cloud_name: config.cloudinary.cloud_name,
+  api_key: config.cloudinary.api_key,
+  api_secret: config.cloudinary.api_secret
+});
+
 
 /**
  * User Schema
@@ -22,6 +31,9 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     required: true
+  },
+  picture: {
+    type: String
   },
   password: {
     type: String,
@@ -52,11 +64,20 @@ const UserSchema = new mongoose.Schema({
   }]
 });
 
+
+// UserSchema.virtual('picture').get(function(){
+//   return this.picture+'ola';
+// });
+
 UserSchema.methods.toJSON = function toJSON() {
   const user = this;
   const userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio']);
+  userObject.picture = ( userObject.picture !== ''
+      ? cloudinary.url(userObject.picture, {width: 500, height: 500})
+      : userObject.picture );
+
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
 };
 
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
@@ -189,6 +210,20 @@ UserSchema.pre('save', function pre(next) {
   }
 
   return true;
+});
+
+UserSchema.pre('save', function pre(next) {
+  const user = this;
+
+  if (!user.isModified('picture')) {
+    return next();
+  }
+
+  return cloudinary.uploader.upload(user.picture, { tags: 'infestus_profile' })
+    .then((image) => {
+      user.picture = image.public_id;
+      return next();
+    });
 });
 
 /**

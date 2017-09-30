@@ -15,7 +15,8 @@ export default {
     body: {
       nickname: Joi.string(),
       email: Joi.string().email(),
-      bio: Joi.string()
+      bio: Joi.string(),
+      picture: Joi.string()
     }
   },
 
