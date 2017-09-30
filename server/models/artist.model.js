@@ -1,8 +1,4 @@
-import Promise from 'bluebird';
 import mongoose from 'mongoose';
-import _ from 'lodash';
-import auxs from '../helpers/auxs.helper';
-import config from '../../config/config';
 
 /**
  * Artist Schema

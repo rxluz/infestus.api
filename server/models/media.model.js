@@ -1,17 +1,11 @@
-import Promise from 'bluebird';
 import mongoose from 'mongoose';
-import _ from 'lodash';
-import cloudinary  from 'cloudinary';
-
-import User from '../models/user.model';
-import Artist from '../models/artist.model';
-import auxs from '../helpers/auxs.helper';
+import cloudinary from 'cloudinary';
 import config from '../../config/config';
 
 const Schema = mongoose.Schema;
 
 /**
- * User Schema
+ * Media Schema
  */
 const MediaSchema = new mongoose.Schema({
   picture: {
@@ -20,10 +14,6 @@ const MediaSchema = new mongoose.Schema({
     required: true
   },
   title: {
-    type: String,
-    trim: true
-  },
-  artist: {
     type: String,
     trim: true
   },
@@ -57,8 +47,6 @@ const MediaSchema = new mongoose.Schema({
   }
 });
 
-
-
 MediaSchema.pre('save', function pre(next) {
   const media = this;
 
@@ -72,18 +60,12 @@ MediaSchema.pre('save', function pre(next) {
     api_secret: config.cloudinary.api_secret
   });
 
-
-  return cloudinary.uploader.upload(media.picture, {tags: 'infestus_media'})
-    .then(function (image) {
-      media.picture=image.public_id;
-      console.dir(image);
+  return cloudinary.uploader.upload(media.picture, { tags: 'infestus_media' })
+    .then((image) => {
+      media.picture = image.public_id;
       return next();
     });
 });
-
-
-
-
 
 /**
  * @typedef User

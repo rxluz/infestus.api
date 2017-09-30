@@ -13,14 +13,11 @@ function recent(req, res) {
  * @returns {artists}
  */
 function complete(req, res) {
-  console.log(req.params.term);
-
   return Artist
-  .find({ name:  { $regex: '.*' + req.params.term.toLowerCase() + '.*' } })
-  .select('name')
-  .limit(10)
-  .then(artist => res.send(artist));
-
+    .find({ name: { $regex: `.*${req.params.term.toLowerCase()}.*` } })
+    .select('name')
+    .limit(10)
+    .then(artist => res.send(artist));
 }
 
 /**
@@ -63,5 +60,4 @@ function followDelete(req, res) {
   return res.json({ hello: 'artists_followDelete' });
 }
 
-
-export default { recent, complete,  featured, about, medias, follow, followDelete };
+export default { recent, complete, featured, about, medias, follow, followDelete };

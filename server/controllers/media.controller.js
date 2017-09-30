@@ -1,4 +1,3 @@
-import User from '../models/user.model';
 import Media from '../models/media.model';
 import Artist from '../models/artist.model';
 
@@ -15,17 +14,17 @@ function featured(req, res) {
  * @returns {media}
  */
 function create(req, res) {
-  if(req.body.artist){
-    return Artist.findOne({ name: req.body.artist }).then(artist => {
-      if(artist){
-        req.body.artist=artist._id;
+  if (req.body.artist) {
+    return Artist.findOne({ name: req.body.artist.toLowerCase() }).then((artist) => {
+      if (artist) {
+        req.body.artist = artist._id;
         return createFinish(req, res);
       }
 
       const artistNew = new Artist({ name: req.body.artist });
 
-      return artistNew.save().then(artnew => {
-        req.body.artist=artnew._id;
+      return artistNew.save().then((artnew) => {
+        req.body.artist = artnew._id;
         return createFinish(req, res);
       });
     });
@@ -35,24 +34,24 @@ function create(req, res) {
 }
 
 
-function createFinish(req, res){
-    const body = {
-      picture: req.body.picture,
-      artist: (req.body.artist ? req.body.artist : undefined),
-      title: (req.body.title ? req.body.title : undefined),
-      place: {
-        name: (req.body.place_name ? req.body.place_name : undefined),
-        lat: (req.body.place_lat ? req.body.place_lat : undefined),
-        lng: (req.body.place_lng ? req.body.place_lng : undefined)
-      }
-    };
+function createFinish(req, res) {
+  const body = {
+    picture: req.body.picture,
+    artist: (req.body.artist ? req.body.artist : undefined),
+    title: (req.body.title ? req.body.title : undefined),
+    place: {
+      name: (req.body.place_name ? req.body.place_name : undefined),
+      lat: (req.body.place_lat ? req.body.place_lat : undefined),
+      lng: (req.body.place_lng ? req.body.place_lng : undefined)
+    }
+  };
 
-    const media = new Media(body);
+  const media = new Media(body);
 
-    return media
-      .save()
-      .then(() => res.send(media))
-      .catch(e => res.status(400).send(e));
+  return media
+    .save()
+    .then(() => res.send(media))
+    .catch(e => res.status(400).send(e));
 }
 
 /**
