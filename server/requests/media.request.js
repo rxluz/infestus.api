@@ -15,6 +15,9 @@ export default {
 
   // PUT /api/media/{media-id}
   update: {
+    params: {
+      mediaID: Joi.string().required()
+    },
     body: {
       lat: Joi.number(),
       lng: Joi.number(),

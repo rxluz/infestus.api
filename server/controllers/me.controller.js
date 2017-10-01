@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import User from '../models/user.model';
+import Media from '../models/media.model';
 
 /**
  * Get current user infos
@@ -15,7 +16,7 @@ function get(req, res) {
  * @returns {User}
  */
 function getMedia(req, res) {
-  return res.json({ hello: 'getMedia' });
+  return Media.findByUser(req.user._id).then(media => res.json(media));
 }
 
 /**

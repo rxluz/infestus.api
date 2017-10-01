@@ -1,5 +1,6 @@
 import Media from '../models/media.model';
 import Artist from '../models/artist.model';
+var ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * Get the featured medias
@@ -14,30 +15,33 @@ function featured(req, res) {
  * @returns {media}
  */
 function create(req, res) {
-  if (req.body.artist) {
-    return Artist.findOne({ name: req.body.artist.toLowerCase() }).then((artist) => {
-      if (artist) {
-        req.body.artist = artist._id;
-        return createFinish(req, res);
-      }
+  return (req.body.artist
+    ? findOrCreateArtist(req.body.artist)
+      .then(artist_id => createFinish(req, res, artist_id))
+      .catch(e => res.status(500).send(e))
+    : createFinish(req, res));
+}
 
-      const artistNew = new Artist({ name: req.body.artist });
+function findOrCreateArtist(name){
+  return Artist.findOne({ name: name.toLowerCase() }).then((artist) => {
+    if (artist) {
+      return Promise.resolve(artist._id);
+    }
 
-      return artistNew.save().then((artnew) => {
-        req.body.artist = artnew._id;
-        return createFinish(req, res);
-      });
-    });
-  }
+    const artistNew = new Artist({ name });
 
-  return createFinish(req, res);
+    return artistNew.save()
+      .then(artnew => Promise.resolve(artnew.id))
+      .catch(e => Promise.reject(e));
+  });
 }
 
 
-function createFinish(req, res) {
+function createFinish(req, res, artist_id) {
   const body = {
     picture: req.body.picture,
-    artist: (req.body.artist ? req.body.artist : undefined),
+    owner: req.user._id,
+    artist: (req.body.artist ? artist_id : undefined),
     title: (req.body.title ? req.body.title : undefined),
     place: {
       name: (req.body.place_name ? req.body.place_name : undefined),
@@ -54,12 +58,40 @@ function createFinish(req, res) {
     .catch(e => res.status(400).send(e));
 }
 
+function updateFinish(req, res, artist_id) {
+  return Media
+    .findOne({ _id: new ObjectId(req.params.mediaID), owner: req.user._id })
+    .then(media => {
+      if(media.owner.toString() !== req.user._id.toString()){
+        return res.status(401).send();
+      }
+      media.artist = artist_id ? new ObjectId(artist_id) : media.artist;
+      media.title = req.body.title ? req.body.title : media.title;
+      media.place.name = req.body.place_name ? req.body.place_name : media.place.name;
+      media.place.lat = req.body.place_lat ? req.body.place_lat : media.place.lat;
+      media.place.lng = req.body.place_lng ? req.body.place_lng : media.place.lng;
+
+      return media
+        .save()
+        .then(() => res.send(media))
+        .catch(e => res.status(401).send(media));
+    })
+    .catch(e => res.status(404).send());
+}
+
 /**
  * Update the selected media
  * @returns {media}
  */
 function update(req, res) {
-  return res.json({ hello: 'media_update' });
+  console.log('entrou aqui0 ');
+  return (
+    req.body.artist
+    ? findOrCreateArtist(req.body.artist)
+      .then(artist_id => updateFinish(req, res, artist_id))
+      .catch(e => res.status(500).send(e))
+    : updateFinish(req, res)
+  );
 }
 
 /**

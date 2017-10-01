@@ -64,18 +64,13 @@ const UserSchema = new mongoose.Schema({
   }]
 });
 
-
-// UserSchema.virtual('picture').get(function(){
-//   return this.picture+'ola';
-// });
-
 UserSchema.methods.toJSON = function toJSON() {
   const user = this;
   const userObject = user.toObject();
 
-  userObject.picture = ( userObject.picture !== ''
-      ? cloudinary.url(userObject.picture, {width: 500, height: 500})
-      : userObject.picture );
+  userObject.picture = (userObject.picture !== ''
+    ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
+    : userObject.picture);
 
   return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
 };

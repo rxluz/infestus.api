@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import cloudinary from 'cloudinary';
 import config from '../../config/config';
+import _ from 'lodash';
 
 const Schema = mongoose.Schema;
 
@@ -46,6 +47,24 @@ const MediaSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+
+MediaSchema.statics.findByUser = function findByUser(owner){
+  var media = this;
+
+  return media.find({owner});
+};
+
+MediaSchema.methods.toJSON = function toJSON() {
+  const media = this;
+  const mediaObject = media.toObject();
+
+  mediaObject.picture = (mediaObject.picture !== ''
+    ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
+    : mediaObject.picture);
+
+  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place']);
+};
 
 MediaSchema.pre('save', function pre(next) {
   const media = this;
