@@ -16,7 +16,12 @@ function get(req, res) {
  * @returns {User}
  */
 function getMedia(req, res) {
-  return Media.findByUser(req.user._id).then(media => res.json(media));
+  return Media
+    .findByUser(req.user._id)
+    .populate('owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .sort('-createdAt')
+    .then(media => res.json(media));
 }
 
 /**

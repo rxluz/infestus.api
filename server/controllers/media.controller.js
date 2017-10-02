@@ -119,7 +119,7 @@ function get(req, res) {
     .populate('owner', 'nickname picture _id about')
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
-    .then(media => ( media ? res.send(media) : res.status(404).send() ))
+    .then(media => (media ? res.send(media) : res.status(404).send()))
     .catch(e => res.status(404).send(e));
 }
 
@@ -130,8 +130,8 @@ function get(req, res) {
 function getComments(req, res) {
   return Media.findOne({ _id: req.params.mediaID, active: true })
     .populate('comments.owner', '_id nickname picture')
-    .then(media => media ? res.send(media.comments) : res.status(404).send({}))
-    .catch(e => res.status(500).send());
+    .then(media => (media ? res.send(media.comments) : res.status(404).send({})))
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -139,21 +139,26 @@ function getComments(req, res) {
  * @returns {*}
  */
 function createComment(req, res) {
-  return Media.findOne({ _id: req.params.mediaID, active: true})
-    .then(media => media ? createCommentFinish(req, res) : res.status(404).send())
-    .catch(e => res.status(404).send());
+  return Media.findOne({ _id: req.params.mediaID, active: true })
+    .then(media => (
+      media
+        ? createCommentFinish(req, res)
+        : res.status(404).send()
+    ))
+    .catch(e => res.status(404).send(e));
 }
 
-function createCommentFinish(req, res){
+function createCommentFinish(req, res) {
   return Media.findByIdAndUpdate(
     req.params.mediaID,
-    {$push:
-      {
-        "comments": {content: req.body.content, owner: new ObjectId(req.user._id)}
-      }
+    { $push:
+      { comments: { content: req.body.content, owner: new ObjectId(req.user._id) } }
     },
-    {safe: true, upsert: true},
-    (err, media) => err ? res.status(404) : getComments(req, res)
+    { safe: true, upsert: true },
+    err => (err
+      ? res.status(404)
+      : getComments(req, res)
+    )
   );
 }
 
@@ -162,6 +167,34 @@ function createCommentFinish(req, res){
  * @returns {*}
  */
 function removeComment(req, res) {
+  console.log(req.params.commentID, req.params.mediaID);
+  return Media.findOne({
+    _id: req.params.mediaID,
+    'comments._id': req.params.commentID,
+    active: true
+  })
+    .then((media) => {
+      if(!media) return res.status(403).send();
+
+      const comment=media.comments.filter(c => c._id == req.params.commentID);
+
+      if(media.owner !== req.user._id.toString() && comment[0].owner.toString()!==req.user._id.toString()) {
+        return res.status(401).send();
+      }
+
+      media.comments.id(req.params.commentID).remove();
+
+      return media.save()
+      .then(() => res.send())
+      .catch(e => res.status(500).send(e));
+    })
+    .catch(e => res.status(405).send(e));
+
+  return res.json({ hello: 'media_removeComment' });
+}
+
+
+function removeCommentFinish(req, res) {
   return res.json({ hello: 'media_removeComment' });
 }
 
