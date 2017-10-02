@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import cloudinary from 'cloudinary';
-import config from '../../config/config';
 import _ from 'lodash';
+import config from '../../config/config';
+
 
 const Schema = mongoose.Schema;
 
@@ -27,7 +28,10 @@ const MediaSchema = new mongoose.Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   comments: [{
     content: String,
-    date: Date,
+    date: {
+      type: Date,
+      default: Date.now
+    },
     owner: { type: Schema.Types.ObjectId, ref: 'User' }
   }],
   likes: [{
@@ -48,11 +52,10 @@ const MediaSchema = new mongoose.Schema({
   }
 });
 
+MediaSchema.statics.findByUser = function findByUser(owner) {
+  const media = this;
 
-MediaSchema.statics.findByUser = function findByUser(owner){
-  var media = this;
-
-  return media.find({owner});
+  return media.find({ owner });
 };
 
 MediaSchema.methods.toJSON = function toJSON() {
@@ -63,7 +66,7 @@ MediaSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
     : mediaObject.picture);
 
-  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place']);
+  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'likes']);
 };
 
 MediaSchema.pre('save', function pre(next) {

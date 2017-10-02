@@ -1,9 +1,19 @@
+import Media from '../models/media.model';
+
 /**
  * Get the user feed
+ * inicialmente busca uma lista simples de street arts,
+ * futuramente irá buscar somente as streetarts que o user segue
  * @returns {feed}
  */
 function index(req, res) {
-  return res.json({ hello: 'feed_index' });
+  return Media
+    .find({ active: true })
+    .populate('owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .sort('-createdAt')
+    .limit(20)
+    .then(data => res.send(data));
 }
 
 /**

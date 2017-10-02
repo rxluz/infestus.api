@@ -1,6 +1,7 @@
 import Media from '../models/media.model';
 import Artist from '../models/artist.model';
-var ObjectId = require('mongoose').Types.ObjectId;
+
+const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * Get the featured medias
@@ -17,12 +18,12 @@ function featured(req, res) {
 function create(req, res) {
   return (req.body.artist
     ? findOrCreateArtist(req.body.artist)
-      .then(artist_id => createFinish(req, res, artist_id))
+      .then(artistID => createFinish(req, res, artistID))
       .catch(e => res.status(500).send(e))
     : createFinish(req, res));
 }
 
-function findOrCreateArtist(name){
+function findOrCreateArtist(name) {
   return Artist.findOne({ name: name.toLowerCase() }).then((artist) => {
     if (artist) {
       return Promise.resolve(artist._id);
@@ -37,11 +38,11 @@ function findOrCreateArtist(name){
 }
 
 
-function createFinish(req, res, artist_id) {
+function createFinish(req, res, artistID) {
   const body = {
     picture: req.body.picture,
     owner: req.user._id,
-    artist: (req.body.artist ? artist_id : undefined),
+    artist: (req.body.artist ? artistID : undefined),
     title: (req.body.title ? req.body.title : undefined),
     place: {
       name: (req.body.place_name ? req.body.place_name : undefined),
@@ -58,14 +59,11 @@ function createFinish(req, res, artist_id) {
     .catch(e => res.status(400).send(e));
 }
 
-function updateFinish(req, res, artist_id) {
+function updateFinish(req, res, artistID) {
   return Media
-    .findOne({ _id: new ObjectId(req.params.mediaID), owner: req.user._id })
-    .then(media => {
-      if(media.owner.toString() !== req.user._id.toString()){
-        return res.status(401).send();
-      }
-      media.artist = artist_id ? new ObjectId(artist_id) : media.artist;
+    .findOne({ _id: new ObjectId(req.params.mediaID), owner: req.user._id, active: true })
+    .then((media) => {
+      media.artist = artistID ? new ObjectId(artistID) : media.artist;
       media.title = req.body.title ? req.body.title : media.title;
       media.place.name = req.body.place_name ? req.body.place_name : media.place.name;
       media.place.lat = req.body.place_lat ? req.body.place_lat : media.place.lat;
@@ -74,9 +72,9 @@ function updateFinish(req, res, artist_id) {
       return media
         .save()
         .then(() => res.send(media))
-        .catch(e => res.status(401).send(media));
+        .catch(e => res.status(401).send(e));
     })
-    .catch(e => res.status(404).send());
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -84,13 +82,12 @@ function updateFinish(req, res, artist_id) {
  * @returns {media}
  */
 function update(req, res) {
-  console.log('entrou aqui0 ');
   return (
     req.body.artist
-    ? findOrCreateArtist(req.body.artist)
-      .then(artist_id => updateFinish(req, res, artist_id))
-      .catch(e => res.status(500).send(e))
-    : updateFinish(req, res)
+      ? findOrCreateArtist(req.body.artist)
+        .then(artistID => updateFinish(req, res, artistID))
+        .catch(e => res.status(500).send(e))
+      : updateFinish(req, res)
   );
 }
 
@@ -99,7 +96,17 @@ function update(req, res) {
  * @returns {media}
  */
 function remove(req, res) {
-  return res.json({ hello: 'media_remove' });
+  return Media
+    .findOne({ _id: new ObjectId(req.params.mediaID), owner: req.user._id, active: true })
+    .then((media) => {
+      media.active = false;
+
+      return media
+        .save()
+        .then(() => res.send())
+        .catch(e => res.status(401).send(e));
+    })
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -107,7 +114,13 @@ function remove(req, res) {
  * @returns {media}
  */
 function get(req, res) {
-  return res.json({ hello: 'media_get' });
+  return Media
+    .findOne({ _id: new ObjectId(req.params.mediaID), active: true })
+    .populate('owner', 'nickname picture _id about')
+    .populate('comments.owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .then(media => ( media ? res.send(media) : res.status(404).send() ))
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -115,7 +128,10 @@ function get(req, res) {
  * @returns {comments}
  */
 function getComments(req, res) {
-  return res.json({ hello: 'media_getComments' });
+  return Media.findOne({ _id: req.params.mediaID, active: true })
+    .populate('comments.owner', '_id nickname picture')
+    .then(media => media ? res.send(media.comments) : res.status(404).send({}))
+    .catch(e => res.status(500).send());
 }
 
 /**
@@ -123,7 +139,22 @@ function getComments(req, res) {
  * @returns {*}
  */
 function createComment(req, res) {
-  return res.json({ hello: 'media_createComment' });
+  return Media.findOne({ _id: req.params.mediaID, active: true})
+    .then(media => media ? createCommentFinish(req, res) : res.status(404).send())
+    .catch(e => res.status(404).send());
+}
+
+function createCommentFinish(req, res){
+  return Media.findByIdAndUpdate(
+    req.params.mediaID,
+    {$push:
+      {
+        "comments": {content: req.body.content, owner: new ObjectId(req.user._id)}
+      }
+    },
+    {safe: true, upsert: true},
+    (err, media) => err ? res.status(404) : getComments(req, res)
+  );
 }
 
 /**

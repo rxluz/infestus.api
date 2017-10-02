@@ -75,6 +75,16 @@ UserSchema.methods.toJSON = function toJSON() {
   return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
 };
 
+UserSchema.methods.toObject = function toObject() {
+  const userObject = this;
+
+  userObject.picture = (userObject.picture !== ''
+    ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
+    : userObject.picture);
+
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
+};
+
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
   const user = this;
   const access = 'auth';

@@ -24,8 +24,6 @@ if (config.env === 'development') {
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
-//app.use(bodyParser({limit: '50mb'}));
-
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());

@@ -29,6 +29,9 @@ export default {
 
   // POST /api/media/{media-id}/comments
   createComment: {
+    params: {
+      mediaID: Joi.string().required()
+    },
     body: {
       content: Joi.string().required()
     }

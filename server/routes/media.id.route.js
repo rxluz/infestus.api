@@ -4,7 +4,7 @@ import mediaRequest from '../requests/media.request';
 import mediaCtrl from '../controllers/media.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
-const router = express.Router({mergeParams: true}); // eslint-disable-line new-cap
+const router = express.Router({ mergeParams: true }); // eslint-disable-line new-cap
 
 router.route('/')
   /**
