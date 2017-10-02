@@ -66,8 +66,7 @@ const MediaSchema = new mongoose.Schema({
 
 MediaSchema.statics.findByUser = function findByUser(owner) {
   const media = this;
-
-  return media.find({ owner });
+  return media.find({ owner, active: true });
 };
 
 MediaSchema.set('toJSON', { getters: true, virtuals: true });
