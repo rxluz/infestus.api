@@ -32,14 +32,27 @@ const MediaSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     },
-    owner: { type: Schema.Types.ObjectId, ref: 'User' }
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    flags: [{
+      date: {
+        type: Date,
+        default: Date.now
+      },
+      owner: { type: Schema.Types.ObjectId, ref: 'User' }
+    }]
   }],
   likes: [{
-    date: Date,
+    date: {
+      type: Date,
+      default: Date.now
+    },
     owner: { type: Schema.Types.ObjectId, ref: 'User' }
   }],
   flags: [{
-    date: Date,
+    date: {
+      type: Date,
+      default: Date.now
+    },
     owner: { type: Schema.Types.ObjectId, ref: 'User' }
   }],
   active: {
@@ -58,6 +71,9 @@ MediaSchema.statics.findByUser = function findByUser(owner) {
   return media.find({ owner });
 };
 
+MediaSchema.set('toJSON', { getters: true, virtuals: true });
+MediaSchema.set('toObject', { getters: true, virtuals: true });
+
 MediaSchema.methods.toJSON = function toJSON() {
   const media = this;
   const mediaObject = media.toObject();
@@ -66,7 +82,7 @@ MediaSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
     : mediaObject.picture);
 
-  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'likes']);
+  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal']);
 };
 
 MediaSchema.pre('save', function pre(next) {
@@ -87,6 +103,15 @@ MediaSchema.pre('save', function pre(next) {
       media.picture = image.public_id;
       return next();
     });
+});
+
+
+MediaSchema.virtual('likesTotal').get(function () {
+  return this.likes.length;
+});
+
+MediaSchema.virtual('commentsTotal').get(function () {
+  return this.comments.length;
 });
 
 /**

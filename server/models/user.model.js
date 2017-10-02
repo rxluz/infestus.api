@@ -47,6 +47,7 @@ const UserSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true,
+    required: true
   },
   createdAt: {
     type: Date,
@@ -82,7 +83,7 @@ UserSchema.methods.toObject = function toObject() {
     ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
     : userObject.picture);
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'active', 'createdAt']);
 };
 
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
@@ -230,6 +231,7 @@ UserSchema.pre('save', function pre(next) {
       return next();
     });
 });
+
 
 /**
  * @typedef User

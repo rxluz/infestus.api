@@ -129,6 +129,7 @@ function get(req, res) {
  */
 function getComments(req, res) {
   return Media.findOne({ _id: req.params.mediaID, active: true })
+    .select('comments.owner comments.content comments._id comments.date')
     .populate('comments.owner', '_id nickname picture')
     .then(media => (media ? res.send(media.comments) : res.status(404).send({})))
     .catch(e => res.status(500).send(e));
@@ -156,7 +157,7 @@ function createCommentFinish(req, res) {
     },
     { safe: true, upsert: true },
     err => (err
-      ? res.status(404)
+      ? res.status(404).send()
       : getComments(req, res)
     )
   );
@@ -167,35 +168,27 @@ function createCommentFinish(req, res) {
  * @returns {*}
  */
 function removeComment(req, res) {
-  console.log(req.params.commentID, req.params.mediaID);
   return Media.findOne({
     _id: req.params.mediaID,
     'comments._id': req.params.commentID,
     active: true
   })
     .then((media) => {
-      if(!media) return res.status(403).send();
+      if (!media) return res.status(404).send();
 
-      const comment=media.comments.filter(c => c._id == req.params.commentID);
-
-      if(media.owner !== req.user._id.toString() && comment[0].owner.toString()!==req.user._id.toString()) {
+      const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
+      if (media.owner.toString() !== req.user._id.toString()
+        && comment[0].owner.toString() !== req.user._id.toString()) {
         return res.status(401).send();
       }
 
       media.comments.id(req.params.commentID).remove();
 
       return media.save()
-      .then(() => res.send())
-      .catch(e => res.status(500).send(e));
+        .then(() => res.send(media.comments))
+        .catch(e => res.status(500).send(e));
     })
-    .catch(e => res.status(405).send(e));
-
-  return res.json({ hello: 'media_removeComment' });
-}
-
-
-function removeCommentFinish(req, res) {
-  return res.json({ hello: 'media_removeComment' });
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -203,7 +196,34 @@ function removeCommentFinish(req, res) {
  * @returns {*}
  */
 function createFlag(req, res) {
-  return res.json({ hello: 'media_flag' });
+  return Media.findOne({ _id: req.params.mediaID, active: true })
+    .then((media) => {
+      if (!media) return res.status(404).send();
+
+      const flagged = media.flags.filter(fl => fl.owner.toString() === req.user._id.toString());
+
+      if(flagged[0]) return res.status(200).send({ 'already': 'flagged', 'fl': flagged });
+
+      return createFlagFinish(req, res);
+    });
+}
+
+/**
+ * Post a flag in selected media
+ * @returns {*}
+ */
+function createFlagFinish(req, res) {
+  return Media.findByIdAndUpdate(
+    req.params.mediaID,
+    { $push:
+      { flags: { owner: new ObjectId(req.user._id) } }
+    },
+    { safe: true, upsert: true },
+    err => (err
+      ? res.status(404).send(err)
+      : res.status(200).send()
+    )
+  );
 }
 
 /**
@@ -211,7 +231,24 @@ function createFlag(req, res) {
  * @returns {*}
  */
 function removeFlag(req, res) {
-  return res.json({ hello: 'media_removeFlag' });
+  return Media.findOne({
+    _id: req.params.mediaID,
+    'flags.owner': req.user._id.toString(),
+    active: true
+  })
+    .then((media) => {
+      if (!media) return res.status(404).send();
+
+      const flagged = media.flags.filter(fl => fl.owner.toString() === req.user._id.toString());
+      if(!flagged[0]) return res.status(404).send();
+
+      media.flags.id(flagged[0]._id).remove();
+
+      return media.save()
+        .then(() => res.send())
+        .catch(e => res.status(500).send(e));
+    })
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -219,7 +256,31 @@ function removeFlag(req, res) {
  * @returns {*}
  */
 function createCommentFlag(req, res) {
-  return res.json({ hello: 'media_Commentflag' });
+  return Media.findOne({
+    _id: req.params.mediaID,
+    'comments._id': req.params.commentID,
+    active: true
+  })
+    .then((media) => {
+      if(!media) return res.status(404).send();
+
+      const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
+
+      if(!comment[0]) return res.status(401).send();
+
+      const flagged = comment[0].flags.filter(fl => fl.owner.toString() === req.user._id.toString());
+
+      if(flagged[0]) return res.status(200).send({'already': 'flagged'});
+
+      media.comments.id(comment[0]._id.toString()).flags.push({ owner: req.user._id });
+
+      return media.save()
+        .then(() => res.send({'deu': 'certo'}))
+        .catch(e => res.status(500).send(e));
+
+    })
+    .catch(e => res.status(403).send(e));
+
 }
 
 /**
@@ -227,32 +288,106 @@ function createCommentFlag(req, res) {
  * @returns {*}
  */
 function removeCommentFlag(req, res) {
-  return res.json({ hello: 'media_CommentremoveFlag' });
+  return Media.findOne({
+    _id: req.params.mediaID,
+    'comments._id': req.params.commentID,
+    active: true
+  })
+  .then((media) => {
+    if(!media) return res.status(404).send(1);
+
+    const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
+
+    if(!comment[0]) return res.status(404).send(2);
+
+    if(!comment[0].flags) return res.status(404).send(2);
+
+    const flagged = comment[0].flags.filter(fg => fg.owner.toString() === req.user._id.toString());
+
+    if(!flagged[0]) return res.status(404).send(3);
+
+    media.comments.id(comment[0]._id.toString()).flags.id(flagged[0]._id.toString()).remove();
+
+    return media.save()
+      .then(() => res.send())
+      .catch(e => res.status(500).send(e));
+
+  })
+  .catch(e => res.status(404).send(e));
 }
 
 /**
- * Get likes list in selected media
- * @returns {*}
- */
-function getLike(req, res) {
-  return res.json({ hello: 'media_getLike' });
-}
-
-/**
- * Post a like in selected media
+ * Post a Like in selected media
  * @returns {*}
  */
 function createLike(req, res) {
-  return res.json({ hello: 'media_createLike' });
+  return Media.findOne({ _id: req.params.mediaID, active: true })
+    .then((media) => {
+      if (!media) return res.status(404).send();
+
+      const liked = media.likes.filter(fl => fl.owner.toString() === req.user._id.toString());
+
+      if(liked[0]) return res.status(200).send({ 'already': 'liked', 'fl': liked });
+
+      return createLikeFinish(req, res);
+    });
 }
 
 /**
- * Remove a like in selected media
+ * Post a Like in selected media
+ * @returns {*}
+ */
+function createLikeFinish(req, res) {
+  return Media.findByIdAndUpdate(
+    req.params.mediaID,
+    { $push:
+      { likes: { owner: new ObjectId(req.user._id) } }
+    },
+    { safe: true, upsert: true },
+    err => (err
+      ? res.status(404).send(err)
+      : res.status(200).send()
+    )
+  );
+}
+
+/**
+ * Remove Like in selected media
  * @returns {*}
  */
 function removeLike(req, res) {
-  return res.json({ hello: 'media_removeLike' });
+  return Media.findOne({
+    _id: req.params.mediaID,
+    'likes.owner': req.user._id.toString(),
+    active: true
+  })
+    .then((media) => {
+      if (!media) return res.status(404).send();
+
+      const liked = media.likes.filter(fl => fl.owner.toString() === req.user._id.toString());
+      if(!liked[0]) return res.status(404).send();
+
+      media.likes.id(liked[0]._id).remove();
+
+      return media.save()
+        .then(() => res.send())
+        .catch(e => res.status(500).send(e));
+    })
+    .catch(e => res.status(404).send(e));
 }
+
+/**
+ * Get the featured medias
+ * @returns {medias}
+ */
+function getLike(req, res) {
+  return Media.findOne({ _id: req.params.mediaID })
+    .select('likes')
+    .populate('likes.owner', '_id nickname picture')
+    .then(media => (media ? res.send({ total: media.likes.length, likes: media.likes}) : res.status(404).send()))
+    .catch(e => res.status(500).send(e));
+}
+
 
 export default {
   featured,
