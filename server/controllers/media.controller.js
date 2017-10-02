@@ -202,7 +202,7 @@ function createFlag(req, res) {
 
       const flagged = media.flags.filter(fl => fl.owner.toString() === req.user._id.toString());
 
-      if(flagged[0]) return res.status(200).send({ 'already': 'flagged', 'fl': flagged });
+      if (flagged[0]) return res.status(200).send({ already: 'flagged', fl: flagged });
 
       return createFlagFinish(req, res);
     });
@@ -240,7 +240,7 @@ function removeFlag(req, res) {
       if (!media) return res.status(404).send();
 
       const flagged = media.flags.filter(fl => fl.owner.toString() === req.user._id.toString());
-      if(!flagged[0]) return res.status(404).send();
+      if (!flagged[0]) return res.status(404).send();
 
       media.flags.id(flagged[0]._id).remove();
 
@@ -262,25 +262,25 @@ function createCommentFlag(req, res) {
     active: true
   })
     .then((media) => {
-      if(!media) return res.status(404).send();
+      if (!media) return res.status(404).send();
 
       const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
 
-      if(!comment[0]) return res.status(401).send();
+      if (!comment[0]) return res.status(401).send();
 
-      const flagged = comment[0].flags.filter(fl => fl.owner.toString() === req.user._id.toString());
+      const flagged = comment[0].flags.filter(
+        fl => fl.owner.toString() === req.user._id.toString()
+      );
 
-      if(flagged[0]) return res.status(200).send({'already': 'flagged'});
+      if (flagged[0]) return res.status(200).send({ already: 'flagged' });
 
       media.comments.id(comment[0]._id.toString()).flags.push({ owner: req.user._id });
 
       return media.save()
-        .then(() => res.send({'deu': 'certo'}))
+        .then(() => res.send({ deu: 'certo' }))
         .catch(e => res.status(500).send(e));
-
     })
     .catch(e => res.status(403).send(e));
-
 }
 
 /**
@@ -293,27 +293,28 @@ function removeCommentFlag(req, res) {
     'comments._id': req.params.commentID,
     active: true
   })
-  .then((media) => {
-    if(!media) return res.status(404).send(1);
+    .then((media) => {
+      if (!media) return res.status(404).send(1);
 
-    const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
+      const comment = media.comments.filter(c => c._id.toString() === req.params.commentID);
 
-    if(!comment[0]) return res.status(404).send(2);
+      if (!comment[0]) return res.status(404).send(2);
 
-    if(!comment[0].flags) return res.status(404).send(2);
+      if (!comment[0].flags) return res.status(404).send(2);
 
-    const flagged = comment[0].flags.filter(fg => fg.owner.toString() === req.user._id.toString());
+      const flagged = comment[0].flags.filter(
+        fg => fg.owner.toString() === req.user._id.toString()
+      );
 
-    if(!flagged[0]) return res.status(404).send(3);
+      if (!flagged[0]) return res.status(404).send(3);
 
-    media.comments.id(comment[0]._id.toString()).flags.id(flagged[0]._id.toString()).remove();
+      media.comments.id(comment[0]._id.toString()).flags.id(flagged[0]._id.toString()).remove();
 
-    return media.save()
-      .then(() => res.send())
-      .catch(e => res.status(500).send(e));
-
-  })
-  .catch(e => res.status(404).send(e));
+      return media.save()
+        .then(() => res.send())
+        .catch(e => res.status(500).send(e));
+    })
+    .catch(e => res.status(404).send(e));
 }
 
 /**
@@ -327,7 +328,7 @@ function createLike(req, res) {
 
       const liked = media.likes.filter(fl => fl.owner.toString() === req.user._id.toString());
 
-      if(liked[0]) return res.status(200).send({ 'already': 'liked', 'fl': liked });
+      if (liked[0]) return res.status(200).send({ already: 'liked', fl: liked });
 
       return createLikeFinish(req, res);
     });
@@ -365,7 +366,7 @@ function removeLike(req, res) {
       if (!media) return res.status(404).send();
 
       const liked = media.likes.filter(fl => fl.owner.toString() === req.user._id.toString());
-      if(!liked[0]) return res.status(404).send();
+      if (!liked[0]) return res.status(404).send();
 
       media.likes.id(liked[0]._id).remove();
 
@@ -384,10 +385,12 @@ function getLike(req, res) {
   return Media.findOne({ _id: req.params.mediaID })
     .select('likes')
     .populate('likes.owner', '_id nickname picture')
-    .then(media => (media ? res.send({ total: media.likes.length, likes: media.likes}) : res.status(404).send()))
+    .then(media => (media
+      ? res.send({ total: media.likes.length, likes: media.likes })
+      : res.status(404).send())
+    )
     .catch(e => res.status(500).send(e));
 }
-
 
 export default {
   featured,

@@ -3,7 +3,6 @@ import cloudinary from 'cloudinary';
 import _ from 'lodash';
 import config from '../../config/config';
 
-
 const Schema = mongoose.Schema;
 
 /**
@@ -103,15 +102,6 @@ MediaSchema.pre('save', function pre(next) {
       media.picture = image.public_id;
       return next();
     });
-});
-
-
-MediaSchema.virtual('likesTotal').get(function () {
-  return this.likes.length;
-});
-
-MediaSchema.virtual('commentsTotal').get(function () {
-  return this.comments.length;
 });
 
 /**
