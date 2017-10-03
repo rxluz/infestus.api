@@ -3,10 +3,11 @@ import usersCtrl from '../controllers/users.controller';
 import authenticate from '../middlewares/authenticate.middleware';
 
 
-const router = express.Router(); // eslint-disable-line new-cap
+const router = express.Router({ mergeParams: true }); // eslint-disable-line new-cap
 
 /**
   * GET /api/users/{user-id}/about
+  * isFlagged, isOwner, isLiked, LikesAmounts
   * Get the selected user about
   */
 router.route('/about')

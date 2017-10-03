@@ -12,6 +12,7 @@ function index(req, res) {
     .populate('owner', 'nickname picture _id about')
     .populate('artist', 'name')
     .sort('-createdAt')
+    .slice('comments', [0, 2])
     .limit(20)
     .then(data => res.send(data));
 }
