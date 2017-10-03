@@ -8,6 +8,8 @@ const authenticate = (req, res, next) => {
       return Promise.reject();
     }
 
+    global.userID = user._id;
+    
     req.user = user;
     req.token = token;
     next();

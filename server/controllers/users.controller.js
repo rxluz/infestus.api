@@ -19,7 +19,7 @@ function featured(req, res) {
  * @returns {User}
  */
 function about(req, res) {
-  //return User.find({_id: req.params})
+  // return User.find({_id: req.params})
   return res.json({ hello: 'about' });
 }
 

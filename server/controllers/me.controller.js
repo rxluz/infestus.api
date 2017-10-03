@@ -20,6 +20,7 @@ function getMedia(req, res) {
     .findByUser(req.user._id)
     .populate('owner', 'nickname picture _id about')
     .populate('artist', 'name')
+    .slice('comments', [0, 2])
     .sort('-createdAt')
     .then(media => res.json(media));
 }

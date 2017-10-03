@@ -7,6 +7,7 @@ import feedRoutes from './feed.route';
 import otherRoutes from './other.route';
 import mediaRoutes from './media.route';
 import authRoutes from './auth.route';
+import checkUserIsLogged from '../middlewares/checkUserIsLogged.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -16,28 +17,28 @@ router.get('/health-check', (req, res) =>
 );
 
 // mount user routes at /user
-router.use('/me', meRoutes);
+router.use('/me', checkUserIsLogged, meRoutes);
 
 // mount users routes at /users
-router.use('/users', usersRoutes);
+router.use('/users', checkUserIsLogged, usersRoutes);
 
 // mount artists routes at /artists
-router.use('/artists', artistsRoutes);
+router.use('/artists', checkUserIsLogged, artistsRoutes);
 
 // mount tags routes at /tags
-router.use('/tags', tagsRoutes);
+router.use('/tags', checkUserIsLogged, tagsRoutes);
 
 // mount feed routes at /feed
-router.use('/feed', feedRoutes);
+router.use('/feed', checkUserIsLogged, feedRoutes);
 
 // mount other routes at /other
-router.use('/other', otherRoutes);
+router.use('/other', checkUserIsLogged, otherRoutes);
 
 
 // mount media routes at /media
-router.use('/media', mediaRoutes);
+router.use('/media', checkUserIsLogged, mediaRoutes);
 
 // mount auth routes at /auth
-router.use('/auth', authRoutes);
+router.use('/auth', checkUserIsLogged, authRoutes);
 
 export default router;

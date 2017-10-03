@@ -69,6 +69,13 @@ MediaSchema.statics.findByUser = function findByUser(owner) {
   return media.find({ owner, active: true });
 };
 
+MediaSchema.virtual('isLiked').get(function isLiked(){
+  if(!global.userID) return false;
+
+  const isLikedCheck=this.likes.filter(l => l.owner.toString() == global.userID.toString());
+  return isLikedCheck.length > 0;
+});
+
 MediaSchema.set('toJSON', { getters: true, virtuals: true });
 MediaSchema.set('toObject', { getters: true, virtuals: true });
 
@@ -80,7 +87,7 @@ MediaSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
     : mediaObject.picture);
 
-  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal']);
+  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked']);
 };
 
 MediaSchema.pre('save', function pre(next) {
