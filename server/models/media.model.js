@@ -5,6 +5,22 @@ import config from '../../config/config';
 
 const Schema = mongoose.Schema;
 
+const CommentSchema = new mongoose.Schema({
+  content: String,
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  flags: [{
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    owner: { type: Schema.Types.ObjectId, ref: 'User' }
+  }]
+});
+
 /**
  * Media Schema
  */
@@ -25,21 +41,7 @@ const MediaSchema = new mongoose.Schema({
   },
   artist: { type: Schema.Types.ObjectId, ref: 'Artist' },
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
-  comments: [{
-    content: String,
-    date: {
-      type: Date,
-      default: Date.now
-    },
-    owner: { type: Schema.Types.ObjectId, ref: 'User' },
-    flags: [{
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      owner: { type: Schema.Types.ObjectId, ref: 'User' }
-    }]
-  }],
+  comments: [CommentSchema],
   likes: [{
     date: {
       type: Date,
@@ -69,14 +71,42 @@ MediaSchema.statics.findByUser = function findByUser(owner) {
   return media.find({ owner, active: true });
 };
 
-MediaSchema.virtual('isLiked').get(function isLiked(){
-  if(!global.userID) return false;
+MediaSchema.virtual('isLiked').get(function isLiked() {
+  if (!global.userID || !this.likes) return false;
 
-  const isLikedCheck=this.likes.filter(l => l.owner.toString() == global.userID.toString());
-  return isLikedCheck.length > 0;
+  return (this
+    .likes
+    .filter(l => l.owner.toString() === global.userID.toString())
+  ).length > 0;
+
 });
 
+MediaSchema.virtual('isFlagged').get(function isLiked() {
+  if (!global.userID || !this.flags) return false;
+
+  return (this
+    .flags
+    .filter(
+      l => l.owner.toString() === global.userID.toString()
+    )
+  ).length > 0;
+});
+
+CommentSchema.virtual('isFlagged').get(function isFlagged() {
+  if (!global.userID || !this.flags) return false;
+
+  return (this
+    .flags
+    .filter(fl => fl.owner.toString() === global.userID.toString())
+  ).length > 0;
+});
+
+
+CommentSchema.set('toJSON', { getters: true, virtuals: true });
+CommentSchema.set('toObject', { getters: true, virtuals: true });
+
 MediaSchema.set('toJSON', { getters: true, virtuals: true });
+
 MediaSchema.set('toObject', { getters: true, virtuals: true });
 
 MediaSchema.methods.toJSON = function toJSON() {
@@ -87,8 +117,26 @@ MediaSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
     : mediaObject.picture);
 
-  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked']);
+  mediaObject.comments = mediaObject.comments
+    ? mediaObject.comments.map(co => {
+      if (co.flags) delete co.flags;
+      delete co.id;
+      return co;
+    })
+    : [];
+
+  return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
 };
+
+CommentSchema.methods.toJSON = function toJSON() {
+  const comment = this;
+  const commentObject = comment.toObject();
+
+  commentObject.id = undefined;
+  commentObject.flags = undefined;
+  return commentObject;
+};
+
 
 MediaSchema.pre('save', function pre(next) {
   const media = this;

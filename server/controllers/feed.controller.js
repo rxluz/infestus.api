@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Media from '../models/media.model';
 
 /**
@@ -12,9 +13,26 @@ function index(req, res) {
     .populate('owner', 'nickname picture _id about')
     .populate('artist', 'name')
     .sort('-createdAt')
-    .slice('comments', [0, 2])
     .limit(20)
-    .then(data => res.send(data));
+    .then(data => res.send(getMediaResponse(data)));
+}
+
+function getMediaResponse(media) {
+  return media.map((m) => {
+    m.likesTotal = m.likes ? m.likes.length : 0;
+    m.commentsTotal = m.comments ? m.comments.length : 0;
+
+    if (m.comments) {
+      m.comments = m.comments.slice(0, 2).map((mm) => {
+        mm.id = undefined;
+        mm.flags = undefined;
+        return mm;
+      });
+    }
+    m.likes = undefined;
+
+    return _.pick(m, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
+  });
 }
 
 /**

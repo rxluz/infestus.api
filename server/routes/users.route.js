@@ -1,6 +1,7 @@
 import express from 'express';
 import usersCtrl from '../controllers/users.controller';
 import usersIDRoutes from './users.id.route';
+import usersMdwr from '../middlewares/users.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -16,9 +17,7 @@ router.route('/recent').get(usersCtrl.recent);
   */
 router.route('/featured').get(usersCtrl.featured);
 
-
 // mount user routes at /users
-router.use('/:userID', usersIDRoutes);
-
+router.use('/:userID', usersMdwr.checkUserID, usersIDRoutes);
 
 export default router;

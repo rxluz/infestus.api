@@ -9,7 +9,6 @@ const authenticate = (req, res, next) => {
     }
 
     global.userID = user._id;
-    
     req.user = user;
     req.token = token;
     next();

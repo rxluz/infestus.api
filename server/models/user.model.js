@@ -7,6 +7,7 @@ import cloudinary from 'cloudinary';
 
 import auxs from '../helpers/auxs.helper';
 import config from '../../config/config';
+import Media from '../models/media.model';
 
 
 cloudinary.config({
@@ -53,6 +54,7 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  following: [{ type: mongoose.Schema.ObjectId, ref: 'User', unique: true }],
   tokens: [{
     access: {
       type: String,
@@ -73,8 +75,10 @@ UserSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
     : userObject.picture);
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture']);
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'likesReceveid', 'createdAt']);
 };
+
+UserSchema.set('toJSON', { getters: true, virtuals: true });
 
 UserSchema.methods.toObject = function toObject() {
   const userObject = this;
@@ -83,7 +87,7 @@ UserSchema.methods.toObject = function toObject() {
     ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
     : userObject.picture);
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'active', 'createdAt']);
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'password', 'active', 'likesReceveid',  'createdAt']);
 };
 
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
@@ -93,7 +97,7 @@ UserSchema.methods.generateAuthToken = function generateAuthToken() {
 
   user.tokens.push({ access, token });
 
-  return user.save().then(() => token);
+  return user.save().then(() => token).catch(e => {console.log('tem coisa ruim aqui');});
 };
 
 UserSchema.statics.generateRecoverToken = function generateRecoverToken(email) {

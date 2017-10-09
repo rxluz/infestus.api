@@ -1,3 +1,7 @@
+import _ from 'lodash';
+import User from '../models/user.model';
+import Media from '../models/media.model';
+
 /**
  * Get the list of recent users
  * @returns {Users}
@@ -19,8 +23,32 @@ function featured(req, res) {
  * @returns {User}
  */
 function about(req, res) {
-  // return User.find({_id: req.params})
-  return res.json({ hello: 'about' });
+  return User
+    .findOne({ _id: req.params.userID })
+    .select('nickname bio picture createdAt')
+    .then(user => (
+      user
+        ? res.send(
+          (
+            (u) => ({
+                _id: u._id,
+                nickname: u.nickname,
+                bio: u.bio,
+                picture: u.picture,
+                createdAt: u.createdAt,
+                following: isFollowing(req, u._id.toString())
+              })
+          )(user)
+        )
+        : res.status(404).send()
+    ))
+    .catch(() => res.status(404).send());
+}
+
+function isFollowing(req, userID){
+  return (req.user && req.user.following)
+    ? (req.user.following.filter(fl => fl.toString() === userID)).length > 0
+    : false;
 }
 
 /**
@@ -28,7 +56,35 @@ function about(req, res) {
  * @returns {User}
  */
 function medias(req, res) {
-  return res.json({ hello: 'medias' });
+  return Media
+    .findByUser(req.params.userID)
+    .populate('owner', 'nickname picture _id about')
+    .populate('comments.owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .sort('-createdAt')
+    .then(media => (
+      ( media && media.length > 0 )
+        ? res.json(getMediaResponse(media))
+        : res.status(404).send({})
+    ));
+}
+
+function getMediaResponse(media) {
+  return media.map((m) => {
+    m.likesTotal = m.likes ? m.likes.length : 0;
+    m.commentsTotal = m.comments ? m.comments.length : 0;
+
+    if (m.comments) {
+      m.comments = m.comments.slice(0, 2).map((mm) => {
+        mm.id = undefined;
+        mm.flags = undefined;
+        return mm;
+      });
+    }
+    m.likes = undefined;
+
+    return _.pick(m, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
+  });
 }
 
 /**
@@ -36,7 +92,10 @@ function medias(req, res) {
  * @returns {User}
  */
 function follow(req, res) {
-  return res.json({ hello: 'follow' });
+  req.user.following.push(req.params.userID);
+  return req.user.save()
+  .then(u => res.send(u))
+  .catch(() => res.status(500).send());
 }
 
 /**
@@ -44,7 +103,10 @@ function follow(req, res) {
  * @returns {User}
  */
 function followDelete(req, res) {
-  return res.json({ hello: 'followDelete' });
+  req.user.following = req.user.following.filter(fl => fl.toString() !== req.params.userID);
+  return req.user.save()
+  .then(u => res.send(u))
+  .catch(() => res.status(500).send());
 }
 
 

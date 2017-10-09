@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Media from '../models/media.model';
 import Artist from '../models/artist.model';
 
@@ -119,8 +120,25 @@ function get(req, res) {
     .populate('owner', 'nickname picture _id about')
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
-    .then(media => (media ? res.send(media) : res.status(404).send()))
+    .then(media => (media ? res.send(getResponse(media)) : res.status(404).send()))
     .catch(e => res.status(404).send(e));
+}
+
+function getResponse(media) {
+  const m = media.toObject();
+  m.likesTotal = m.likes ? m.likes.length : 0;
+  m.commentsTotal = m.comments ? m.comments.length : 0;
+
+  if(m.comments) {
+    m.comments = m.comments.slice(0, 2).map((mm) => {
+      mm.id = undefined;
+      mm.flags = undefined;
+      return mm;
+    });
+  }
+  m.likes = undefined;
+
+  return _.pick(m, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
 }
 
 /**
@@ -129,10 +147,10 @@ function get(req, res) {
  */
 function getComments(req, res) {
   return Media.findOne({ _id: req.params.mediaID, active: true })
-    .select('comments.owner comments.content comments._id comments.date')
+    .select('_id comments')
     .populate('comments.owner', '_id nickname picture')
-    .then(media => (media ? res.send(media.comments) : res.status(404).send({})))
-    .catch(e => res.status(500).send(e));
+    .then(media => (media ? res.send(media) : res.status(404).send({})))
+    .catch(e => res.status(412).send(e));
 }
 
 /**
@@ -153,13 +171,10 @@ function createCommentFinish(req, res) {
   return Media.findByIdAndUpdate(
     req.params.mediaID,
     { $push:
-      { comments: { content: req.body.content, owner: new ObjectId(req.user._id) } }
+      { comments: { content: req.body.content, owner: req.user._id } }
     },
     { safe: true, upsert: true },
-    err => (err
-      ? res.status(404).send()
-      : getComments(req, res)
-    )
+    err => res.status(err ? 404 : 200).send()
   );
 }
 

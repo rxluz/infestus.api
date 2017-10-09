@@ -8,6 +8,7 @@ import Media from '../models/media.model';
  * @returns {User}
  */
 function get(req, res) {
+  req.user.likesReceveid = 0;
   return res.json(req.user);
 }
 
@@ -19,10 +20,32 @@ function getMedia(req, res) {
   return Media
     .findByUser(req.user._id)
     .populate('owner', 'nickname picture _id about')
+    .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
-    .slice('comments', [0, 2])
     .sort('-createdAt')
-    .then(media => res.json(media));
+    .then(media => (
+        (media && media.length>0)
+      ? res.json(getMediaResponse(media))
+      : res.status(404).send({})
+    ));
+}
+
+function getMediaResponse(media) {
+  return media.map((m) => {
+    m.likesTotal = m.likes ? m.likes.length : 0;
+    m.commentsTotal = m.comments ? m.comments.length : 0;
+
+    if (m.comments) {
+      m.comments = m.comments.slice(0, 2).map((mm) => {
+        mm.id = undefined;
+        mm.flags = undefined;
+        return mm;
+      });
+    }
+    m.likes = undefined;
+
+    return _.pick(m, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
+  });
 }
 
 /**
