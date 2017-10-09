@@ -81,11 +81,11 @@ function getFollowing(req, res) {
     .then(a =>
       (a
         ? res.send((
-            aa => ({
-              total: aa.following.length,
-              following: aa.following
-            })
-          )(a))
+          aa => ({
+            total: aa.following.length,
+            following: aa.following
+          })
+        )(a))
         : res.status(404).send()
       )
     )
