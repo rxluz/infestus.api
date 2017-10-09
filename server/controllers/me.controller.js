@@ -80,8 +80,7 @@ function getFollowing(req, res) {
     .populate('following', 'nickname picture _id')
     .then(a =>
       (a
-        ? res.send(
-          (
+        ? res.send((
             aa => ({
               total: aa.following.length,
               following: aa.following

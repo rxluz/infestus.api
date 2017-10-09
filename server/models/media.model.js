@@ -127,6 +127,16 @@ MediaSchema.methods.toJSON = function toJSON() {
   return _.pick(mediaObject, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
 };
 
+MediaSchema.methods.toObject = function toObject() {
+  const mediaObject = this;
+
+  mediaObject.picture = (mediaObject.picture !== ''
+    ? cloudinary.url(mediaObject.picture, { width: 500, height: 500 })
+    : mediaObject.picture);
+
+  return mediaObject;
+};
+
 CommentSchema.methods.toJSON = function toJSON() {
   const comment = this;
   const commentObject = comment.toObject();

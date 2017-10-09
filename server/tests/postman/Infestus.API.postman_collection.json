@@ -7,8 +7,6 @@
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
-
-		""
 		{
 			"name": "auth",
 			"description": "",
@@ -16,13 +14,11 @@
 				{
 					"name": "/login [DONE]",
 					"request": {
-						"url": "{{url}}/auth/login",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -42,6 +38,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/auth/login",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -49,24 +46,22 @@
 				{
 					"name": "/logout [DONE]",
 					"request": {
-						"url": "{{url}}/auth/logout",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
+						"url": "{{url}}/auth/logout",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -74,13 +69,11 @@
 				{
 					"name": "/recover/request [DONE]",
 					"request": {
-						"url": "{{url}}/auth/recover/request",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -94,6 +87,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/auth/recover/request",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -101,13 +95,11 @@
 				{
 					"name": "/recover/check/{code} [DONE]",
 					"request": {
-						"url": "{{url}}/auth/recover/check/60021",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -121,6 +113,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/auth/recover/check/60021",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -128,13 +121,11 @@
 				{
 					"name": "/recover/restore/{code} [DONE]",
 					"request": {
-						"url": "{{url}}/auth/recover/restore/95297",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -154,6 +145,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/auth/recover/restore/95297",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -167,19 +159,15 @@
 				{
 					"name": "/ [DONE]",
 					"request": {
-						"url": "{{url}}/me",
 						"method": "GET",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWQwMTEwZjkzYzNmMTBlZmMxOGFhZmYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2ODA4MDc5fQ.l2-WJSaW1WXl_g7ADixNaKnQpa7Ea--Wqc44xyU1Quk",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
+						"url": "{{url}}/me",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -187,38 +175,47 @@
 				{
 					"name": "/media [DONE]",
 					"request": {
-						"url": "{{url}}/me/media",
 						"method": "GET",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/me/media",
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/followers",
+					"name": "/followers [DONE]",
 					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token3}}"
+							}
+						],
+						"body": {},
 						"url": "{{url}}/me/followers",
-						"method": "GET",
-						"header": [],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/following",
+					"name": "/following [DONE]",
 					"request": {
-						"url": "{{url}}/me/following",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token3}}"
+							}
+						],
 						"body": {},
+						"url": "{{url}}/me/following",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -226,13 +223,11 @@
 				{
 					"name": "/ [DONE]",
 					"request": {
-						"url": "{{url}}/me",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -258,6 +253,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/me",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -265,18 +261,15 @@
 				{
 					"name": "/ [DONE]",
 					"request": {
-						"url": "{{url}}/me",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWQxMzJkNWE5NmFjMzMxMmYwMTdhYWUiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2ODgyMjYxfQ.dvFEuq67MplB8ShSQ5y4glZJ_zhC7XsxLTF-AS59uvQ",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {
@@ -286,19 +279,22 @@
 									"key": "nickname",
 									"value": "rxluz{{$randomInt}}",
 									"type": "text",
-									"description": ""
+									"description": "",
+									"disabled": true
 								},
 								{
 									"key": "email",
 									"value": "{{$randomInt}}rx@appock.co",
 									"type": "text",
-									"description": ""
+									"description": "",
+									"disabled": true
 								},
 								{
 									"key": "bio",
 									"value": "sdfnsdbfksdfEDIT",
 									"description": "",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "picture",
@@ -308,6 +304,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/me",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -315,18 +312,15 @@
 				{
 					"name": "/password [DONE]",
 					"request": {
-						"url": "{{url}}/me/password",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWM5NzM2YjBjOTc4YTA4N2RkMGVmNDIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2NjI4NDI3fQ.jI55eC_r3uusvhD_OgFxhMi1ZZO8pPjEIfVy2ur9epY",
-								"description": ""
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWM5NzM2YjBjOTc4YTA4N2RkMGVmNDIiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA2NjI4NDI3fQ.jI55eC_r3uusvhD_OgFxhMi1ZZO8pPjEIfVy2ur9epY"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -346,6 +340,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/me/password",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -353,18 +348,15 @@
 				{
 					"name": "/ [DONE]",
 					"request": {
-						"url": "{{url}}/me",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWMyNDdhYTIxZGQ5NzA4YjJmN2M1NDgiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA1OTA0NTU0fQ._-0f-xUIHtK48uIg3WUwkz75thHT7f2CF6ceEsO38zE",
-								"description": ""
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OWMyNDdhYTIxZGQ5NzA4YjJmN2M1NDgiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTA1OTA0NTU0fQ._-0f-xUIHtK48uIg3WUwkz75thHT7f2CF6ceEsO38zE"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -384,6 +376,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/me",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -397,10 +390,10 @@
 				{
 					"name": "/recent",
 					"request": {
-						"url": "{{url}}/users/recent",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/users/recent",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -408,54 +401,69 @@
 				{
 					"name": "/featured",
 					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"url": "{{url}}/users/featured",
-						"method": "GET",
-						"header": [],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/{user_id}/about",
+					"name": "/{user_id}/about [DONE]",
 					"request": {
-						"url": "{{url}}/users/{user_id}/about",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token}}"
+							}
+						],
 						"body": {},
+						"url": "{{url}}/users/{{userID}}/about",
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/{user_id}/medias",
+					"name": "/{user_id}/medias [DONE]",
 					"request": {
-						"url": "{{url}}/users/{user_id}/medias",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/users/{{userID}}/medias",
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/{user_id}/follow",
+					"name": "/{user_id}/follow [DONE]",
 					"request": {
-						"url": "{{url}}/users/{user_id}/follow",
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token2}}"
+							}
+						],
 						"body": {},
+						"url": "{{url}}/users/{{userID3}}/follow",
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/{user_id}/follow",
+					"name": "/{user_id}/follow [DONE]",
 					"request": {
-						"url": "{{url}}/users/{user_id}/follow",
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token}}"
+							}
+						],
 						"body": {},
+						"url": "{{url}}/users/{{userID}}/follow",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -469,10 +477,10 @@
 				{
 					"name": "/recent",
 					"request": {
-						"url": "{{url}}/artists/recent",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/recent",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -480,10 +488,10 @@
 				{
 					"name": "/complete/{term} [DONE]",
 					"request": {
-						"url": "{{url}}/artists/complete/ge",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/complete/ge",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -491,10 +499,10 @@
 				{
 					"name": "/featured",
 					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"url": "{{url}}/artists/featured",
-						"method": "GET",
-						"header": [],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -502,10 +510,10 @@
 				{
 					"name": "/{artist_id}/about",
 					"request": {
-						"url": "{{url}}/artists/{artist_id}/about",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/{artist_id}/about",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -513,13 +521,11 @@
 				{
 					"name": "/{artist_id}/about",
 					"request": {
-						"url": "{{url}}/artists/{artist_id}/about",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -533,6 +539,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/artists/{artist_id}/about",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -540,10 +547,10 @@
 				{
 					"name": "/{artist_id}/medias",
 					"request": {
-						"url": "{{url}}/artists/{artist_id}/medias",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/{artist_id}/medias",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -551,10 +558,10 @@
 				{
 					"name": "/{artist_id}/follow",
 					"request": {
-						"url": "{{url}}/artists/{artist_id}/follow",
 						"method": "POST",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/{artist_id}/follow",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -562,10 +569,10 @@
 				{
 					"name": "/{artist_id}/follow",
 					"request": {
-						"url": "{{url}}/artists/{artist_id}/follow",
 						"method": "DELETE",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/artists/{artist_id}/follow",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -579,10 +586,10 @@
 				{
 					"name": "/recent",
 					"request": {
-						"url": "{{url}}/tags/recent",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/tags/recent",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -590,10 +597,10 @@
 				{
 					"name": "/featured",
 					"request": {
-						"url": "{{url}}/tags/featured",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/tags/featured",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -601,10 +608,10 @@
 				{
 					"name": "/{tag_id}/media",
 					"request": {
-						"url": "{{url}}/tags/{tag_id}/medias",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/tags/{tag_id}/medias",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -618,13 +625,13 @@
 				{
 					"name": "/ [IN PROGRESS]",
 					"request": {
-						"url": "{{url}}/feed",
 						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
+						"url": "{{url}}/feed",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -632,10 +639,10 @@
 				{
 					"name": "/search/{term}",
 					"request": {
-						"url": "{{url}}/feed/search/{term}",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/feed/search/{term}",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -649,10 +656,10 @@
 				{
 					"name": "/featured",
 					"request": {
-						"url": "{{url}}/media/featured",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/media/featured",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -660,18 +667,15 @@
 				{
 					"name": "/ [DONE]",
 					"request": {
-						"url": "{{url}}/media",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {
@@ -715,6 +719,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/media",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -722,18 +727,15 @@
 				{
 					"name": "/{media-id} [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {
@@ -771,6 +773,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/media/{{mediaID}}",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -778,21 +781,19 @@
 				{
 					"name": "/{media-id} [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -800,10 +801,15 @@
 				{
 					"name": "/{media-id} [DONE]",
 					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
 						"url": "{{url}}/media/{{mediaID}}",
-						"method": "GET",
-						"header": [],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -811,10 +817,10 @@
 				{
 					"name": "/{media-id}/comments [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/comments",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/comments",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -822,18 +828,15 @@
 				{
 					"name": "/{media-id}/comments [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/comments",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							},
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {
@@ -847,6 +850,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/media/{{mediaID}}/comments",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -854,16 +858,15 @@
 				{
 					"name": "/{media-id}/comments/{comment-id} [DONE]",
 					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
 						"url": "{{url}}/media/{{mediaID}}/comments/59d2b515f4381a542b45b4dd",
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
-							}
-						],
-						"body": {},
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -871,16 +874,15 @@
 				{
 					"name": "/{media-id}/comments/{comment-id}/flag [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/comments/{{commentID}}/flag",
 						"method": "POST",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/comments/{{commentID}}/flag",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -888,16 +890,15 @@
 				{
 					"name": "/{media-id}/comments/{comment-id}/flag [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/comments/{{commentID}}/flag",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/comments/{{commentID}}/flag",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -905,16 +906,15 @@
 				{
 					"name": "/{media-id}/like [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/like",
 						"method": "POST",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/like",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -922,16 +922,15 @@
 				{
 					"name": "/{media-id}/like [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/like",
 						"method": "GET",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/like",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -939,16 +938,15 @@
 				{
 					"name": "/{media-id}/like [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/like",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/like",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -956,16 +954,15 @@
 				{
 					"name": "/{media-id}/flag [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/flag",
 						"method": "POST",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/flag",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -973,16 +970,15 @@
 				{
 					"name": "/{media-id}/flag [DONE]",
 					"request": {
-						"url": "{{url}}/media/{{mediaID}}/flag",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "x-auth",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
 						"body": {},
+						"url": "{{url}}/media/{{mediaID}}/flag",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -996,13 +992,11 @@
 				{
 					"name": "/feedback",
 					"request": {
-						"url": "{{url}}/other/feedback",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
+								"value": "application/x-www-form-urlencoded"
 							}
 						],
 						"body": {
@@ -1028,6 +1022,7 @@
 								}
 							]
 						},
+						"url": "{{url}}/other/feedback",
 						"description": "List the user basic infos"
 					},
 					"response": []
