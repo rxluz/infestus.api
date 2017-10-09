@@ -19,11 +19,11 @@ chai.config.includeStack = true;
 
 describe('## USERS APIs', () => {
   describe('# POST /api/users/{user-id}/follow', () => {
-    it('should return unauthorized', (done) => {
+    it('should return not found', (done) => {
       request(app)
         .post('/api/users/1/follow')
         .send({})
-        .expect(httpStatus.UNAUTHORIZED)
+        .expect(httpStatus.NOT_FOUND)
         .then(() => {
           done();
         })
@@ -32,11 +32,11 @@ describe('## USERS APIs', () => {
   });
 
   describe('# DELETE /api/users/{user-id}/follow', () => {
-    it('should return unauthorized', (done) => {
+    it('should return not found', (done) => {
       request(app)
         .delete('/api/users/1/follow')
         .send({})
-        .expect(httpStatus.UNAUTHORIZED)
+        .expect(httpStatus.NOT_FOUND)
         .then(() => {
           done();
         })

@@ -129,7 +129,7 @@ function getResponse(media) {
   m.likesTotal = m.likes ? m.likes.length : 0;
   m.commentsTotal = m.comments ? m.comments.length : 0;
 
-  if(m.comments) {
+  if (m.comments) {
     m.comments = m.comments.slice(0, 2).map((mm) => {
       mm.id = undefined;
       mm.flags = undefined;

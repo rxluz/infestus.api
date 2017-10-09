@@ -24,9 +24,9 @@ function getMedia(req, res) {
     .populate('artist', 'name')
     .sort('-createdAt')
     .then(media => (
-        (media && media.length>0)
-      ? res.json(getMediaResponse(media))
-      : res.status(404).send({})
+      (media && media.length > 0)
+        ? res.json(getMediaResponse(media))
+        : res.status(404).send({})
     ));
 }
 
@@ -53,7 +53,21 @@ function getMediaResponse(media) {
  * @returns {User}
  */
 function getFollowers(req, res) {
-  return res.json({ hello: 'getFollowers' });
+  return User.find({ following: req.user._id })
+    .select('_id nickname picture')
+    .then(a =>
+      (a
+        ? res.send(
+          (
+            aa => ({
+              total: aa.length,
+              followers: aa
+            })
+          )(a))
+        : res.status(404).send()
+      )
+    )
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -61,7 +75,22 @@ function getFollowers(req, res) {
  * @returns {User}
  */
 function getFollowing(req, res) {
-  return res.json({ hello: 'getFollowing' });
+  return User.findOne({ _id: req.user._id })
+    .select('following')
+    .populate('following', 'nickname picture _id')
+    .then(a =>
+      (a
+        ? res.send(
+          (
+            aa => ({
+              total: aa.following.length,
+              following: aa.following
+            })
+          )(a))
+        : res.status(404).send()
+      )
+    )
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -123,15 +152,18 @@ function updatePassword(req, res) {
  * @returns {User}
  */
 function disable(req, res) {
-  return bcrypt.compare(req.body.password, req.user.password, (err, rs) => {
-    if (!rs) return res.status(401).send(err);
-
-    return req.user.set({ active: false }).save((errr, doc) => {
-      if (errr) return res.status(400).send(errr);
-
-      return res.send(doc);
-    });
-  });
+  return bcrypt.compare(req.body.password, req.user.password,
+    (err, rs) => (
+      rs
+        ? req.user.set({ active: false })
+          .save((errr, doc) => (
+            errr
+              ? res.status(400).send(errr)
+              : res.send(doc)
+          ))
+        : res.status(401).send(err)
+    )
+  );
 }
 
 export default {

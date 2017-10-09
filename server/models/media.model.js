@@ -78,7 +78,6 @@ MediaSchema.virtual('isLiked').get(function isLiked() {
     .likes
     .filter(l => l.owner.toString() === global.userID.toString())
   ).length > 0;
-
 });
 
 MediaSchema.virtual('isFlagged').get(function isLiked() {
@@ -118,7 +117,7 @@ MediaSchema.methods.toJSON = function toJSON() {
     : mediaObject.picture);
 
   mediaObject.comments = mediaObject.comments
-    ? mediaObject.comments.map(co => {
+    ? mediaObject.comments.map((co) => {
       if (co.flags) delete co.flags;
       delete co.id;
       return co;

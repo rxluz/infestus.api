@@ -7,8 +7,6 @@ import cloudinary from 'cloudinary';
 
 import auxs from '../helpers/auxs.helper';
 import config from '../../config/config';
-import Media from '../models/media.model';
-
 
 cloudinary.config({
   cloud_name: config.cloudinary.cloud_name,
@@ -75,7 +73,7 @@ UserSchema.methods.toJSON = function toJSON() {
     ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
     : userObject.picture);
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'likesReceveid', 'createdAt']);
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'following', 'likesReceveid', 'createdAt']);
 };
 
 UserSchema.set('toJSON', { getters: true, virtuals: true });
@@ -87,7 +85,7 @@ UserSchema.methods.toObject = function toObject() {
     ? cloudinary.url(userObject.picture, { width: 500, height: 500 })
     : userObject.picture);
 
-  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'password', 'active', 'likesReceveid',  'createdAt']);
+  return _.pick(userObject, ['_id', 'email', 'nickname', 'bio', 'picture', 'password', 'active', 'following', 'likesReceveid', 'createdAt']);
 };
 
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
@@ -97,7 +95,7 @@ UserSchema.methods.generateAuthToken = function generateAuthToken() {
 
   user.tokens.push({ access, token });
 
-  return user.save().then(() => token).catch(e => {console.log('tem coisa ruim aqui');});
+  return user.save().then(() => token);
 };
 
 UserSchema.statics.generateRecoverToken = function generateRecoverToken(email) {

@@ -30,14 +30,14 @@ function about(req, res) {
       user
         ? res.send(
           (
-            (u) => ({
-                _id: u._id,
-                nickname: u.nickname,
-                bio: u.bio,
-                picture: u.picture,
-                createdAt: u.createdAt,
-                following: isFollowing(req, u._id.toString())
-              })
+            u => ({
+              _id: u._id,
+              nickname: u.nickname,
+              bio: u.bio,
+              picture: u.picture,
+              createdAt: u.createdAt,
+              following: isFollowing(req, u._id.toString())
+            })
           )(user)
         )
         : res.status(404).send()
@@ -45,7 +45,7 @@ function about(req, res) {
     .catch(() => res.status(404).send());
 }
 
-function isFollowing(req, userID){
+function isFollowing(req, userID) {
   return (req.user && req.user.following)
     ? (req.user.following.filter(fl => fl.toString() === userID)).length > 0
     : false;
@@ -63,7 +63,7 @@ function medias(req, res) {
     .populate('artist', 'name')
     .sort('-createdAt')
     .then(media => (
-      ( media && media.length > 0 )
+      (media && media.length > 0)
         ? res.json(getMediaResponse(media))
         : res.status(404).send({})
     ));
@@ -94,8 +94,8 @@ function getMediaResponse(media) {
 function follow(req, res) {
   req.user.following.push(req.params.userID);
   return req.user.save()
-  .then(u => res.send(u))
-  .catch(() => res.status(500).send());
+    .then(u => res.send(u))
+    .catch(() => res.status(500).send());
 }
 
 /**
@@ -105,8 +105,8 @@ function follow(req, res) {
 function followDelete(req, res) {
   req.user.following = req.user.following.filter(fl => fl.toString() !== req.params.userID);
   return req.user.save()
-  .then(u => res.send(u))
-  .catch(() => res.status(500).send());
+    .then(u => res.send(u))
+    .catch(() => res.status(500).send());
 }
 
 
