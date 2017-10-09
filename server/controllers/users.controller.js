@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import cloudinary from 'cloudinary';
+
 import User from '../models/user.model';
 import Media from '../models/media.model';
 
@@ -34,7 +36,9 @@ function about(req, res) {
               _id: u._id,
               nickname: u.nickname,
               bio: u.bio,
-              picture: u.picture,
+              picture: (u.picture !== ''
+                ? cloudinary.url(u.picture, { width: 500, height: 500 })
+                : u.picture),
               createdAt: u.createdAt,
               following: isFollowing(req, u._id.toString())
             })
