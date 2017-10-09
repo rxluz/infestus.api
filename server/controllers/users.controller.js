@@ -78,6 +78,10 @@ function getMediaResponse(media) {
     m.likesTotal = m.likes ? m.likes.length : 0;
     m.commentsTotal = m.comments ? m.comments.length : 0;
 
+    m.picture = (m.picture !== ''
+      ? cloudinary.url(m.picture, { width: 500, height: 500 })
+      : m.picture);
+
     if (m.comments) {
       m.comments = m.comments.slice(0, 2).map((mm) => {
         mm.id = undefined;

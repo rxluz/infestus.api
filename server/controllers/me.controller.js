@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import cloudinary from 'cloudinary';
 import bcrypt from 'bcrypt';
 import User from '../models/user.model';
 import Media from '../models/media.model';
@@ -34,6 +35,10 @@ function getMediaResponse(media) {
   return media.map((m) => {
     m.likesTotal = m.likes ? m.likes.length : 0;
     m.commentsTotal = m.comments ? m.comments.length : 0;
+
+    m.picture = (m.picture !== ''
+      ? cloudinary.url(m.picture, { width: 500, height: 500 })
+      : m.picture);
 
     if (m.comments) {
       m.comments = m.comments.slice(0, 2).map((mm) => {
