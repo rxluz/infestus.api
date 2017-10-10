@@ -1,4 +1,7 @@
+import _ from 'lodash';
 import Artist from '../models/artist.model';
+import Media from '../models/media.model';
+import auxs from '../helpers/auxs.helper';
 
 /**
  * Get the list of recent artists
@@ -33,7 +36,7 @@ function featured(req, res) {
  * @returns {User}
  */
 function about(req, res) {
-  return res.json({ hello: 'artists_about' });
+  return res.send(_.pick(req.artist, ['_id', 'name', 'createdAt']));
 }
 
 /**
@@ -41,7 +44,14 @@ function about(req, res) {
  * @returns {User}
  */
 function medias(req, res) {
-  return res.json({ hello: 'artists_medias' });
+  return Media
+    .find({ active: true })
+    .populate('owner', 'nickname picture _id about')
+    .populate('comments.owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .sort('-createdAt')
+    .limit(20)
+    .then(data => res.send(auxs.getMediaResponse(data)));
 }
 
 /**

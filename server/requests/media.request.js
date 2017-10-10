@@ -5,11 +5,11 @@ export default {
   create: {
     body: {
       picture: Joi.string().required(),
-      lat: Joi.number(),
-      lng: Joi.number(),
+      place_lat: Joi.number(),
+      place_lng: Joi.number(),
       place: Joi.string(),
       artist: Joi.string(),
-      tite: Joi.string()
+      title: Joi.string()
     }
   },
 

@@ -2,6 +2,7 @@ import express from 'express';
 import artistsCtrl from '../controllers/artists.controller';
 
 import artistsIDRoutes from './artists.id.route';
+import artistsMdwr from '../middlewares/artists.middleware';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -28,7 +29,7 @@ router.route('/featured')
 
 
 // mount user routes at /artists
-router.use('/:artistID', artistsIDRoutes);
+router.use('/:artistID', artistsMdwr.checkArtistID, artistsIDRoutes);
 
 
 export default router;

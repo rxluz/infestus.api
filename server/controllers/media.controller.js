@@ -1,6 +1,9 @@
+import cloudinary from 'cloudinary';
 import _ from 'lodash';
 import Media from '../models/media.model';
 import Artist from '../models/artist.model';
+
+// import auxs from '../helpers/auxs.helper';
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -20,7 +23,10 @@ function create(req, res) {
   return (req.body.artist
     ? findOrCreateArtist(req.body.artist)
       .then(artistID => createFinish(req, res, artistID))
-      .catch(e => res.status(500).send(e))
+      .catch(e => {
+        console.log(e);
+        return res.status(500).send(e);
+      })
     : createFinish(req, res));
 }
 
@@ -40,7 +46,8 @@ function findOrCreateArtist(name) {
 
 
 function createFinish(req, res, artistID) {
-  const body = {
+
+  const media = new Media({
     picture: req.body.picture,
     owner: req.user._id,
     artist: (req.body.artist ? artistID : undefined),
@@ -50,14 +57,17 @@ function createFinish(req, res, artistID) {
       lat: (req.body.place_lat ? req.body.place_lat : undefined),
       lng: (req.body.place_lng ? req.body.place_lng : undefined)
     }
-  };
+  });
 
-  const media = new Media(body);
+  //console.log(media);
 
   return media
     .save()
-    .then(() => res.send(media))
-    .catch(e => res.status(400).send(e));
+    .then(med => res.send(med))
+    .catch(e => {
+      console.log(e);
+      return res.status(400).send(e);
+    });
 }
 
 function updateFinish(req, res, artistID) {
@@ -121,13 +131,22 @@ function get(req, res) {
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
     .then(media => (media ? res.send(getResponse(media)) : res.status(404).send()))
-    .catch(e => res.status(404).send(e));
+    .catch(e => {
+      console.log(e)
+      return res.status(404).send(e);
+    });
 }
 
 function getResponse(media) {
   const m = media.toObject();
   m.likesTotal = m.likes ? m.likes.length : 0;
   m.commentsTotal = m.comments ? m.comments.length : 0;
+
+  m.picture =
+    m.picture !== ''
+      ? cloudinary.url(m.picture, { width: 500, height: 500 })
+      : m.picture;
+
 
   if (m.comments) {
     m.comments = m.comments.slice(0, 2).map((mm) => {
