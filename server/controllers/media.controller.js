@@ -23,10 +23,7 @@ function create(req, res) {
   return (req.body.artist
     ? findOrCreateArtist(req.body.artist)
       .then(artistID => createFinish(req, res, artistID))
-      .catch(e => {
-        console.log(e);
-        return res.status(500).send(e);
-      })
+      .catch(e => res.status(500).send(e))
     : createFinish(req, res));
 }
 
@@ -44,9 +41,7 @@ function findOrCreateArtist(name) {
   });
 }
 
-
 function createFinish(req, res, artistID) {
-
   const media = new Media({
     picture: req.body.picture,
     owner: req.user._id,
@@ -59,15 +54,10 @@ function createFinish(req, res, artistID) {
     }
   });
 
-  //console.log(media);
-
   return media
     .save()
     .then(med => res.send(med))
-    .catch(e => {
-      console.log(e);
-      return res.status(400).send(e);
-    });
+    .catch(e => res.status(400).send(e));
 }
 
 function updateFinish(req, res, artistID) {
@@ -131,10 +121,7 @@ function get(req, res) {
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
     .then(media => (media ? res.send(getResponse(media)) : res.status(404).send()))
-    .catch(e => {
-      console.log(e)
-      return res.status(404).send(e);
-    });
+    .catch(e => res.status(404).send(e));
 }
 
 function getResponse(media) {
@@ -146,7 +133,6 @@ function getResponse(media) {
     m.picture !== ''
       ? cloudinary.url(m.picture, { width: 500, height: 500 })
       : m.picture;
-
 
   if (m.comments) {
     m.comments = m.comments.slice(0, 2).map((mm) => {

@@ -74,25 +74,37 @@ function medias(req, res) {
 }
 
 function getMediaResponse(media) {
-  return media.map((m) => {
-    m.likesTotal = m.likes ? m.likes.length : 0;
-    m.commentsTotal = m.comments ? m.comments.length : 0;
+  return media.map((mm) => _.pick(
+    (m => {
+      m.likesTotal =
+        m.likes
+          ? m.likes.length
+          : 0;
 
-    m.picture = (m.picture !== ''
-      ? cloudinary.url(m.picture, { width: 500, height: 500 })
-      : m.picture);
+      m.commentsTotal =
+        m.comments
+          ? m.comments.length
+          : 0;
 
-    if (m.comments) {
-      m.comments = m.comments.slice(0, 2).map((mm) => {
-        mm.id = undefined;
-        mm.flags = undefined;
-        return mm;
-      });
-    }
-    m.likes = undefined;
+      m.picture = (m.picture !== ''
+        ? cloudinary.url(m.picture, { width: 500, height: 500 })
+        : m.picture);
 
-    return _.pick(m, ['_id', 'picture', 'owner', 'artist', 'title', 'createdAt', 'place', 'comments', 'commentsTotal', 'likes', 'likesTotal', 'isLiked', 'isFlagged']);
-  });
+
+      if (m.comments) {
+        m.comments = m.comments.slice(0, 2).map((mm_) => {
+          mm_.id = undefined;
+          mm_.flags = undefined;
+          return mm;
+        });
+      }
+
+      return m;
+    })(mm),
+    ['_id', 'picture', 'owner', 'artist', 'title',
+    'createdAt', 'place', 'comments', 'commentsTotal',
+    'likesTotal', 'isLiked', 'isFlagged']
+  ));
 }
 
 /**

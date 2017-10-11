@@ -4,17 +4,14 @@ import cloudinary from 'cloudinary';
 const auxs =
   {
     getRandomInt: (min, max) =>
-      Math.floor
-      (
+      Math.floor(
         Math.random() * (Math.floor(max) - Math.ceil(min))
-      ) + Math.ceil(min)
+      ) + Math.ceil(min),
 
-  , getMediaResponse: media =>
-      media.map((mm) =>
-        _.pick
-        (
+    getMediaResponse: media =>
+      media.map(mm =>
+        _.pick(
           ((m) => {
-
             m.likesTotal =
               m.likes
                 ? m.likes.length
@@ -32,22 +29,21 @@ const auxs =
 
             if (m.comments) {
               m.comments =
-                m.comments.slice(0, 2).map((mm) => {
-                  mm.id = undefined;
-                  mm.flags = undefined;
+                m.comments.slice(0, 2).map((mmm) => {
+                  mmm.id = undefined;
+                  mmm.flags = undefined;
                   return mm;
                 });
             }
 
             m.likes = undefined;
             return m;
-          })(mm)
-
-        , [
-            '_id', 'picture', 'owner', 'artist'
-          , 'title', 'createdAt', 'place', 'comments'
-          , 'commentsTotal', 'likes', 'likesTotal'
-          , 'isLiked', 'isFlagged'
+          })(mm),
+          [
+            '_id', 'picture', 'owner', 'artist',
+            'title', 'createdAt', 'place', 'comments',
+            'commentsTotal', 'likes', 'likesTotal',
+            'isLiked', 'isFlagged'
           ]
         )
       )

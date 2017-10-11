@@ -3,18 +3,19 @@ import User from '../models/user.model';
 const authenticate = (req, res, next) => {
   const token = req.header('x-auth');
 
-  User.findByToken(token).then((user) => {
-    if (!user) {
-      return Promise.reject();
-    }
+  return User.findByToken(token)
+    .then((user) => {
+      if (!user) {
+        return res.status(401).send();
+      }
 
-    global.userID = user._id;
-    req.user = user;
-    req.token = token;
-    next();
+      global.userID = user._id;
+      req.user = user;
+      req.token = token;
+      return next();
 
-    return true;
-  }).catch(() => res.status(401).send());
+    })
+    .catch(() => res.status(401).send());
 };
 
 export { authenticate as default };

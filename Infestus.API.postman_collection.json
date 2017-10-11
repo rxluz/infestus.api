@@ -508,18 +508,7 @@
 					"response": []
 				},
 				{
-					"name": "/{artist_id}/about",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": "{{url}}/artists/{artist_id}/about",
-						"description": "List the user basic infos"
-					},
-					"response": []
-				},
-				{
-					"name": "/{artist_id}/about",
+					"name": "/{artist_id}/about [DONE]",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -539,18 +528,18 @@
 								}
 							]
 						},
-						"url": "{{url}}/artists/{artist_id}/about",
+						"url": "{{url}}/artists/{{artistID}}/about",
 						"description": "List the user basic infos"
 					},
 					"response": []
 				},
 				{
-					"name": "/{artist_id}/medias",
+					"name": "/{artist_id}/medias [DONE]",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"body": {},
-						"url": "{{url}}/artists/{artist_id}/medias",
+						"url": "{{url}}/artists/{{artistID}}/medias",
 						"description": "List the user basic infos"
 					},
 					"response": []
@@ -707,7 +696,7 @@
 								},
 								{
 									"key": "artist",
-									"value": "Gemeoss______ASSAa",
+									"value": "gemeoss______assaa1",
 									"description": "",
 									"type": "text"
 								},

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import config from '../../config/config';
 
 const Schema = mongoose.Schema;
-const ObjectId = mongoose.Types.ObjectId;
+// const ObjectId = mongoose.Types.ObjectId;
 
 const CommentSchema = new mongoose.Schema({
   content: String,
@@ -73,6 +73,8 @@ MediaSchema.statics.findByUser = function findByUser(owner) {
 };
 
 MediaSchema.virtual('isLiked').get(function isLiked() {
+  console.log("this.likes", this.likes);
+  console.log(global.userID);
   if (!global.userID || !this.likes) return false;
 
   return (this

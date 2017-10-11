@@ -155,18 +155,44 @@ UserSchema.statics.setRecoverPassword = function setRecoverPassword(token, email
 UserSchema.statics.findByToken = function findByToken(token) {
   const User = this;
 
-  try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+  return new Promise(
+    (resolve, reject) => {
+      jwt.verify(token, config.jwtSecret, (err, decoded) => {
+        if (err) {
+          console.log('entrou aqui aaaa');
+          return reject();
+        }
 
-    return User.findOne({
-      _id: decoded._id,
-      active: true,
-      'tokens.token': token,
-      'tokens.access': 'auth'
-    });
-  } catch (e) {
-    return Promise.reject();
-  }
+        const user = User.findOne({
+          _id: decoded._id,
+          active: true,
+          'tokens.token': token,
+          'tokens.access': 'auth'
+        });
+
+        return resolve(user);
+      });
+    }
+  );
+
+  // return new Promise(
+  //   (resolve, reject) => {
+  //     try {
+  //       const decoded = ;
+  //     } catch (e) {
+  //       return reject();
+  //     }
+  //
+  //     const user = User.findOne({
+  //       _id: decoded._id,
+  //       active: true,
+  //       'tokens.token': token,
+  //       'tokens.access': 'auth'
+  //     });
+  //
+  //     return resolve(user);
+  //   }
+  // );
 };
 
 UserSchema.statics.findByCredentials = function findByCredentials(nickname, password) {
@@ -224,6 +250,11 @@ UserSchema.pre('save', function pre(next) {
   const user = this;
 
   if (!user.isModified('picture')) {
+    return next();
+  }
+
+  if(user.picture=="" || user.picture=="null"){
+    user.picture="";
     return next();
   }
 
