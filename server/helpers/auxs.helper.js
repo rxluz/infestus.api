@@ -22,6 +22,8 @@ const auxs =
                 ? m.comments.length
                 : 0;
 
+            m.isLiked = "hello";
+
             m.picture =
               m.picture !== ''
                 ? cloudinary.url(m.picture, { width: 500, height: 500 })
@@ -36,17 +38,28 @@ const auxs =
                 });
             }
 
-            m.likes = undefined;
             return m;
           })(mm),
           [
             '_id', 'picture', 'owner', 'artist',
             'title', 'createdAt', 'place', 'comments',
-            'commentsTotal', 'likes', 'likesTotal',
+            'commentsTotal', 'likesTotal',
             'isLiked', 'isFlagged'
           ]
         )
-      )
+      ),
+
+      sortRandomArray: (arrayNum, count) => {
+         const tmp = arrayNum.slice(arrayNum);
+         let ret = [];
+
+         for (let i = 0; i < count; i++) {
+           const index = Math.floor(Math.random() * tmp.length);
+           const removed = tmp.splice(index, 1);
+           ret.push(removed[0]);
+         }
+         return ret;
+       }
   };
 
 export { auxs as default };

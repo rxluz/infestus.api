@@ -7,7 +7,10 @@ const Schema = mongoose.Schema;
 // const ObjectId = mongoose.Types.ObjectId;
 
 const CommentSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    text: true
+  },
   date: {
     type: Date,
     default: Date.now
@@ -33,10 +36,14 @@ const MediaSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    trim: true
+    trim: true,
+    text: true
   },
   place: {
-    name: String,
+    name: {
+      type: String,
+      text: true
+    },
     lat: Number,
     lng: Number
   },
@@ -73,8 +80,6 @@ MediaSchema.statics.findByUser = function findByUser(owner) {
 };
 
 MediaSchema.virtual('isLiked').get(function isLiked() {
-  console.log("this.likes", this.likes);
-  console.log(global.userID);
   if (!global.userID || !this.likes) return false;
 
   return (this
@@ -83,7 +88,7 @@ MediaSchema.virtual('isLiked').get(function isLiked() {
   ).length > 0;
 });
 
-MediaSchema.virtual('isFlagged').get(function isLiked() {
+MediaSchema.virtual('isFlagged').get(function isFlagged() {
   if (!global.userID || !this.flags) return false;
 
   return (this

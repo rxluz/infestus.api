@@ -32,8 +32,8 @@ function getMedia(req, res) {
 }
 
 function getMediaResponse(media) {
-  return media.map((mm) => _.pick(
-    (m => {
+  return media.map(mm => _.pick(
+    ((m) => {
       m.likesTotal =
         m.likes
           ? m.likes.length
@@ -60,8 +60,8 @@ function getMediaResponse(media) {
       return m;
     })(mm),
     ['_id', 'picture', 'owner', 'artist', 'title',
-    'createdAt', 'place', 'comments', 'commentsTotal',
-    'likesTotal', 'isLiked', 'isFlagged']
+      'createdAt', 'place', 'comments', 'commentsTotal',
+      'likesTotal', 'isLiked', 'isFlagged']
   ));
 }
 

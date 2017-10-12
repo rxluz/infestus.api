@@ -3,13 +3,20 @@ import cloudinary from 'cloudinary';
 
 import User from '../models/user.model';
 import Media from '../models/media.model';
+import auxs from '../helpers/auxs.helper';
 
 /**
  * Get the list of recent users
  * @returns {Users}
  */
 function recent(req, res) {
-  return res.json({ hello: 'recent' });
+  return User
+  .find()
+  .select('nickname picture createdAt')
+  .sort('-createdAt')
+  .limit(10)
+  .then(user => res.status(user ? 200 : 404).send(user || {}))
+  .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -17,8 +24,18 @@ function recent(req, res) {
  * @returns {Users}
  */
 function featured(req, res) {
-  return res.json({ hello: 'featured' });
+  return User
+  .find()
+  .select('nickname picture createdAt')
+  .then(user =>
+    res
+      .status(user ? 200 : 404)
+      .send(user ? auxs.sortRandomArray(user, 10) : {})
+    )
+  .catch(e => res.status(500).send(e));
 }
+
+
 
 /**
  * Get the selected user about infos
@@ -74,8 +91,8 @@ function medias(req, res) {
 }
 
 function getMediaResponse(media) {
-  return media.map((mm) => _.pick(
-    (m => {
+  return media.map(mm => _.pick(
+    ((m) => {
       m.likesTotal =
         m.likes
           ? m.likes.length
@@ -102,8 +119,8 @@ function getMediaResponse(media) {
       return m;
     })(mm),
     ['_id', 'picture', 'owner', 'artist', 'title',
-    'createdAt', 'place', 'comments', 'commentsTotal',
-    'likesTotal', 'isLiked', 'isFlagged']
+      'createdAt', 'place', 'comments', 'commentsTotal',
+      'likesTotal', 'isLiked', 'isFlagged']
   ));
 }
 

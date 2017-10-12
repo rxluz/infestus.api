@@ -21,8 +21,8 @@ function index(req, res) {
 }
 
 function getMediaResponse(media) {
-  return media.map((mm) => _.pick(
-    (m => {
+  return media.map(mm => _.pick(
+    ((m) => {
       m.likesTotal =
         m.likes
           ? m.likes.length
@@ -49,8 +49,8 @@ function getMediaResponse(media) {
       return m;
     })(mm),
     ['_id', 'picture', 'owner', 'artist', 'title',
-    'createdAt', 'place', 'comments', 'commentsTotal',
-    'likesTotal', 'isLiked', 'isFlagged']
+      'createdAt', 'place', 'comments', 'commentsTotal',
+      'likesTotal', 'isLiked', 'isFlagged']
   ));
 }
 
@@ -59,7 +59,15 @@ function getMediaResponse(media) {
  * @returns {results}
  */
 function search(req, res) {
-  return res.json({ hello: 'feed_search' });
+  console.log(typeof req.params.term);
+  return Media
+    .find({ active: true, $text : { $search : req.params.term} })
+    .populate('owner', 'nickname picture _id about')
+    .populate('comments.owner', 'nickname picture _id about')
+    .populate('artist', 'name')
+    .sort('-createdAt')
+    .limit(20)
+    .then(data => res.send(getMediaResponse(data)));
 }
 
 export default { index, search };

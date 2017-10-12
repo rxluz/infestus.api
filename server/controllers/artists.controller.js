@@ -8,7 +8,12 @@ import auxs from '../helpers/auxs.helper';
  * @returns {artists}
  */
 function recent(req, res) {
-  return res.json({ hello: 'recent' });
+  return Artist.find()
+  .select('name')
+  .limit(10)
+  .sort('-createdAt')
+  .then(artist => res.status(artist ? 200 : 404).send(artist || {}))
+  .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -28,7 +33,15 @@ function complete(req, res) {
  * @returns {artists}
  */
 function featured(req, res) {
-  return res.json({ hello: 'artists_featured' });
+  return Artist.find()
+  .select('name')
+  .sort('-createdAt')
+  .then(artist =>
+    res
+      .status(artist ? 200 : 404)
+      .send(artist ? auxs.sortRandomArray(artist, 10) : {})
+    )
+  .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -40,18 +53,20 @@ function about(req, res) {
 }
 
 /**
- * Get the selected user medias
- * @returns {User}
+ * Get the selected artist medias
+ * @returns {Artist}
  */
 function medias(req, res) {
+  console.log(global.userID, "global.userID");
   return Media
-    .find({ active: true })
+    .find({ active: true, artist: req.artist._id })
     .populate('owner', 'nickname picture _id about')
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
     .sort('-createdAt')
     .limit(20)
-    .then(data => res.send(auxs.getMediaResponse(data)));
+    .then(data => res.status(data[0] ? 200 : 404).send(data ? auxs.getMediaResponse(data) : {}))
+    .catch(e => res.status(500).send(e));
 }
 
 /**

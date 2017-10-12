@@ -159,40 +159,26 @@ UserSchema.statics.findByToken = function findByToken(token) {
     (resolve, reject) => {
       jwt.verify(token, config.jwtSecret, (err, decoded) => {
         if (err) {
-          console.log('entrou aqui aaaa');
+          console.log('entrou aqui cara');
           return reject();
         }
 
-        const user = User.findOne({
+        return User.findOne({
           _id: decoded._id,
-          active: true,
+
           'tokens.token': token,
           'tokens.access': 'auth'
-        });
+        })
+        .then(usr =>
+          usr
+            ? resolve(usr)
+            : reject()
+          )
+        .catch(() => reject());
 
-        return resolve(user);
       });
     }
   );
-
-  // return new Promise(
-  //   (resolve, reject) => {
-  //     try {
-  //       const decoded = ;
-  //     } catch (e) {
-  //       return reject();
-  //     }
-  //
-  //     const user = User.findOne({
-  //       _id: decoded._id,
-  //       active: true,
-  //       'tokens.token': token,
-  //       'tokens.access': 'auth'
-  //     });
-  //
-  //     return resolve(user);
-  //   }
-  // );
 };
 
 UserSchema.statics.findByCredentials = function findByCredentials(nickname, password) {
@@ -253,8 +239,8 @@ UserSchema.pre('save', function pre(next) {
     return next();
   }
 
-  if(user.picture=="" || user.picture=="null"){
-    user.picture="";
+  if (user.picture === '' || user.picture === 'null') {
+    user.picture = '';
     return next();
   }
 
