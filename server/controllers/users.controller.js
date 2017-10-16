@@ -11,12 +11,12 @@ import auxs from '../helpers/auxs.helper';
  */
 function recent(req, res) {
   return User
-  .find()
-  .select('nickname picture createdAt')
-  .sort('-createdAt')
-  .limit(10)
-  .then(user => res.status(user ? 200 : 404).send(user || {}))
-  .catch(e => res.status(500).send(e));
+    .find()
+    .select('nickname picture createdAt')
+    .sort('-createdAt')
+    .limit(10)
+    .then(user => res.status(user ? 200 : 404).send(user || {}))
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -25,17 +25,15 @@ function recent(req, res) {
  */
 function featured(req, res) {
   return User
-  .find()
-  .select('nickname picture createdAt')
-  .then(user =>
-    res
-      .status(user ? 200 : 404)
-      .send(user ? auxs.sortRandomArray(user, 10) : {})
+    .find()
+    .select('nickname picture createdAt')
+    .then(user =>
+      res
+        .status(user ? 200 : 404)
+        .send(user ? auxs.sortRandomArray(user, 10) : {})
     )
-  .catch(e => res.status(500).send(e));
+    .catch(e => res.status(500).send(e));
 }
-
-
 
 /**
  * Get the selected user about infos
@@ -112,7 +110,7 @@ function getMediaResponse(media) {
         m.comments = m.comments.slice(0, 2).map((mm_) => {
           mm_.id = undefined;
           mm_.flags = undefined;
-          return mm;
+          return mm_;
         });
       }
 

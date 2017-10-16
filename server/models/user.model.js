@@ -159,23 +159,21 @@ UserSchema.statics.findByToken = function findByToken(token) {
     (resolve, reject) => {
       jwt.verify(token, config.jwtSecret, (err, decoded) => {
         if (err) {
-          console.log('entrou aqui cara');
           return reject();
         }
 
-        return User.findOne({
-          _id: decoded._id,
+        return User
+          .findOne({
+            _id: decoded._id,
 
-          'tokens.token': token,
-          'tokens.access': 'auth'
-        })
-        .then(usr =>
-          usr
+            'tokens.token': token,
+            'tokens.access': 'auth'
+          })
+          .then(usr => (usr
             ? resolve(usr)
-            : reject()
+            : reject())
           )
-        .catch(() => reject());
-
+          .catch(() => reject());
       });
     }
   );

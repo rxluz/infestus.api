@@ -6,7 +6,6 @@ const authenticate = (req, res, next) => {
   return !global.userID
     ? User.findByToken(token)
       .then((user) => {
-
         if (!user) {
           return res.status(401).send();
         }

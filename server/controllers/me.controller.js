@@ -53,7 +53,7 @@ function getMediaResponse(media) {
         m.comments = m.comments.slice(0, 2).map((mm_) => {
           mm_.id = undefined;
           mm_.flags = undefined;
-          return mm;
+          return mm_;
         });
       }
 

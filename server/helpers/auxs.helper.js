@@ -22,8 +22,6 @@ const auxs =
                 ? m.comments.length
                 : 0;
 
-            m.isLiked = "hello";
-
             m.picture =
               m.picture !== ''
                 ? cloudinary.url(m.picture, { width: 500, height: 500 })
@@ -34,7 +32,7 @@ const auxs =
                 m.comments.slice(0, 2).map((mmm) => {
                   mmm.id = undefined;
                   mmm.flags = undefined;
-                  return mm;
+                  return mmm;
                 });
             }
 
@@ -49,17 +47,17 @@ const auxs =
         )
       ),
 
-      sortRandomArray: (arrayNum, count) => {
-         const tmp = arrayNum.slice(arrayNum);
-         let ret = [];
+    sortRandomArray: (arrayNum, count) => {
+      const tmp = arrayNum.slice(arrayNum);
+      const ret = [];
 
-         for (let i = 0; i < count; i++) {
-           const index = Math.floor(Math.random() * tmp.length);
-           const removed = tmp.splice(index, 1);
-           ret.push(removed[0]);
-         }
-         return ret;
-       }
+      for (let i = 0; i < count; i += 1) {
+        const index = Math.floor(Math.random() * tmp.length);
+        const removed = tmp.splice(index, 1);
+        ret.push(removed[0]);
+      }
+      return ret;
+    }
   };
 
 export { auxs as default };

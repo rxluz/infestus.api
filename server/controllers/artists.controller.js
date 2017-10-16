@@ -9,11 +9,11 @@ import auxs from '../helpers/auxs.helper';
  */
 function recent(req, res) {
   return Artist.find()
-  .select('name')
-  .limit(10)
-  .sort('-createdAt')
-  .then(artist => res.status(artist ? 200 : 404).send(artist || {}))
-  .catch(e => res.status(500).send(e));
+    .select('name')
+    .limit(10)
+    .sort('-createdAt')
+    .then(artist => res.status(artist ? 200 : 404).send(artist || {}))
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -34,14 +34,14 @@ function complete(req, res) {
  */
 function featured(req, res) {
   return Artist.find()
-  .select('name')
-  .sort('-createdAt')
-  .then(artist =>
-    res
-      .status(artist ? 200 : 404)
-      .send(artist ? auxs.sortRandomArray(artist, 10) : {})
+    .select('name')
+    .sort('-createdAt')
+    .then(artist =>
+      res
+        .status(artist ? 200 : 404)
+        .send(artist ? auxs.sortRandomArray(artist, 10) : {})
     )
-  .catch(e => res.status(500).send(e));
+    .catch(e => res.status(500).send(e));
 }
 
 /**
@@ -57,7 +57,6 @@ function about(req, res) {
  * @returns {Artist}
  */
 function medias(req, res) {
-  console.log(global.userID, "global.userID");
   return Media
     .find({ active: true, artist: req.artist._id })
     .populate('owner', 'nickname picture _id about')

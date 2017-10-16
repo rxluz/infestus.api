@@ -59,9 +59,8 @@ function getMediaResponse(media) {
  * @returns {results}
  */
 function search(req, res) {
-  console.log(typeof req.params.term);
   return Media
-    .find({ active: true, $text : { $search : req.params.term} })
+    .find({ active: true, $text: { $search: req.params.term } })
     .populate('owner', 'nickname picture _id about')
     .populate('comments.owner', 'nickname picture _id about')
     .populate('artist', 'name')
