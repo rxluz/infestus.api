@@ -6,7 +6,8 @@ import Joi from 'joi';
 import joiAssert from 'joi-assert';
 
 import app from '../../../../index';
-import auxs from '../../../helpers/auxs.helper';
+// import auxs from '../../../helpers/auxs.helper';
+import data from './data.me';
 
 chai.config.includeStack = true;
 
@@ -22,35 +23,11 @@ chai.config.includeStack = true;
 // });
 
 describe('## [contract] ME APIs', () => {
-  const nickname = `KK123${auxs.getRandomInt(1, 1000)}`;
-  const email = `${auxs.getRandomInt(1, 1000)}@email.com`;
-  const user = {
-    nickname,
-    email,
-    password: '1234567890'
-  };
-
-  const userWithoutNickname = {
-    email,
-    password: '1234567890'
-  };
-
-  const userWithInvalidEmail = {
-    nickname,
-    email: 'invalidemail',
-    password: '1234567890'
-  };
-
-  const userWithoutPassword = {
-    nickname,
-    email
-  };
-
   describe('# POST /api/me', () => {
     it('should allow the user creation', (done) => {
       request(app)
         .post('/api/me')
-        .send(user)
+        .send(data.user.ok)
         .expect(httpStatus.OK)
         .then((res) => {
           const mePostResponse = Joi.object().keys({
