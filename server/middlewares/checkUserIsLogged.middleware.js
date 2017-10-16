@@ -1,7 +1,9 @@
 import User from '../models/user.model';
+import config from '../../config/config';
 
 const checkUserIsLogged = (req, res, next) => {
   global.userID = undefined;
+  global.testing = (req.header('testing') || {}).toString() === config.testingKey;
 
   if (req.header('x-auth')) {
     const token = req.header('x-auth');

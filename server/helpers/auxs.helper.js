@@ -56,7 +56,7 @@ const auxs =
         const removed = tmp.splice(index, 1);
         ret.push(removed[0]);
       }
-      return ret;
+      return ret.filter(re => re !== undefined);
     }
   };
 

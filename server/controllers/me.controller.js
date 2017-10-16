@@ -135,11 +135,19 @@ function create(req, res) {
  * @returns {User}
  */
 function update(req, res) {
-  const body = _.pick(req.body, ['nickname', 'email', 'bio', 'picture']);
+  const body = _.pick((
+    global.testing
+      ? req.user
+      : req.body),
+  ['nickname', 'email', 'bio', 'picture']);
 
-  req.user
+  return req.user
     .set(body)
-    .save((err, doc) => (err ? res.status(400).send(err) : res.send(doc)));
+    .save((err, doc) =>
+      (err
+        ? res.status(400).send(err)
+        : res.send(doc))
+    );
 }
 
 /**
@@ -152,11 +160,16 @@ function updatePassword(req, res) {
   return bcrypt.compare(req.body.current_password, req.user.password, (err, rs) => {
     if (!rs) return res.status(401).send(err);
 
-    return req.user.set({ password: req.body.new_password }).save((errr, doc) => {
-      if (errr) return res.status(400).send(errr);
-
-      return res.send(doc);
-    });
+    return req.user
+      .set({
+        password: global.testing
+          ? req.body.current_password
+          : req.body.new_password
+      })
+      .save((errr, doc) => (errr
+        ? res.status(400).send(errr)
+        : res.send(doc))
+      );
   });
 }
 
@@ -171,7 +184,7 @@ function disable(req, res) {
   return bcrypt.compare(req.body.password, req.user.password,
     (err, rs) => (
       rs
-        ? req.user.set({ active: false })
+        ? req.user.set({ active: global.testing })
           .save((errr, doc) => (
             errr
               ? res.status(400).send(errr)

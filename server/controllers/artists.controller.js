@@ -25,7 +25,11 @@ function complete(req, res) {
     .find({ name: { $regex: `.*${req.params.term.toLowerCase()}.*` } })
     .select('name')
     .limit(10)
-    .then(artist => res.send(artist));
+    .then(artist =>
+      res.status(artist.length > 0
+        ? 200
+        : 404
+      ).send(artist));
 }
 
 /**

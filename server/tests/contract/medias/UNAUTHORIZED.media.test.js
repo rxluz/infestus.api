@@ -3,15 +3,15 @@ import httpStatus from 'http-status';
 import chai from 'chai';
 
 import app from '../../../../index';
-import data from './data.me';
+import data from './data.media';
 
 chai.config.includeStack = true;
 
-describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
-  describe('# GET /api/me', () => {
-    it('should return unauthorized (invalid token)', (done) => {
+describe('## [contract] MEDIAS APIs (UNAUTHORIZED tests)', () => {
+  describe('# GET /api/media/featured', () => {
+    it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me')
+        .get('/api/media/featured')
         .set('x-auth', data.common.token.invalid)
         .set('testing', data.common.token.testing)
         .send({})
@@ -23,40 +23,12 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# GET /api/me', () => {
+  describe('# POST /api/media', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me')
-        .set('testing', data.common.token.testing)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# PUT /api/me', () => {
-    it('should return unauthorized', (done) => {
-      request(app)
-        .put('/api/me')
-        .set('testing', data.common.token.testing)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# PUT /api/me', () => {
-    it('should return unauthorized (invalid token)', (done) => {
-      request(app)
-        .put('/api/me')
-        .set('testing', data.common.token.testing)
+        .post('/api/media')
         .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
         .then(() => {
@@ -66,26 +38,12 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# PUT /api/me/password', () => {
+  describe('# PUT /api/media', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .put('/api/me/password')
-        .set('testing', data.common.token.testing)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# PUT /api/me/password', () => {
-    it('should return unauthorized (invalid token)', (done) => {
-      request(app)
-        .put('/api/me/password')
-        .set('testing', data.common.token.testing)
+        .put(`/api/media/${data.media.valid.id}`)
         .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
         .then(() => {
@@ -95,39 +53,11 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# DELETE /api/me', () => {
+  describe('# DELETE /api/media/{media-id}', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .delete('/api/me')
-        .set('testing', data.common.token.testing)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# DELETE /api/me', () => {
-    it('should return unauthorized (invalid token)', (done) => {
-      request(app)
-        .delete('/api/me')
-        .set('testing', data.common.token.testing)
+        .delete(`/api/media/${data.media.valid.id}`)
         .set('x-auth', data.common.token.invalid)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# GET /api/me/media', () => {
-    it('should return unauthorized', (done) => {
-      request(app)
-        .get('/api/me/media')
         .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
@@ -138,12 +68,12 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# GET /api/me/media', () => {
+  describe('# GET /api/media/{media-id}', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me/media')
-        .set('testing', data.common.token.testing)
+        .get(`/api/media/${data.media.valid.id}`)
         .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
         .then(() => {
@@ -153,26 +83,12 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# GET /api/me/followers', () => {
+  describe('# GET /api/media/{media-id}/comments', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me/media')
-        .set('testing', data.common.token.testing)
-        .send({})
-        .expect(httpStatus.UNAUTHORIZED)
-        .then(() => {
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-  describe('# GET /api/me/followers', () => {
-    it('should return unauthorized (invalid token)', (done) => {
-      request(app)
-        .get('/api/me/media')
-        .set('testing', data.common.token.testing)
+        .get(`/api/media/${data.media.valid.id}/comments`)
         .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
         .then(() => {
@@ -182,10 +98,11 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# GET /api/me/following', () => {
+  describe('# POST /api/media/{media-id}/comments', () => {
     it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me/media')
+        .post(`/api/media/${data.media.valid.id}/comments`)
+        .set('x-auth', data.common.token.invalid)
         .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
@@ -196,12 +113,102 @@ describe('## [contract] ME APIs (UNAUTHORIZED tests)', () => {
     });
   });
 
-  describe('# GET /api/me/following', () => {
-    it('should return unauthorized (invalid token)', (done) => {
+  describe('# DELETE /api/media/{media-id}/comments', () => {
+    it('should return unauthorized', (done) => {
       request(app)
-        .get('/api/me/media')
-        .set('testing', data.common.token.testing)
+        .delete(`/api/media/${data.media.valid.id}/comments`)
         .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# POST /api/media/{media-id}/comments/{comment-id}/flag', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .post(`/api/media/${data.media.valid.id}/comments/${data.media.valid.comment_id}/flag`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# DELETE /api/media/{media-id}/comments/{comment-id}/flag', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .delete(`/api/media/${data.media.valid.id}/comments/${data.media.valid.comment_id}/flag`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# POST /api/media/{media-id}/like', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .post(`/api/media/${data.media.valid.id}/like`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# DELETE /api/media/{media-id}/like', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .delete(`/api/media/${data.media.valid.id}/like`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# POST /api/media/{media-id}/flag', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .post(`/api/media/${data.media.valid.id}/flag`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
+        .send({})
+        .expect(httpStatus.UNAUTHORIZED)
+        .then(() => {
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe('# DELETE /api/media/{media-id}/flag', () => {
+    it('should return unauthorized', (done) => {
+      request(app)
+        .delete(`/api/media/${data.media.valid.id}/flag`)
+        .set('x-auth', data.common.token.invalid)
+        .set('testing', data.common.token.testing)
         .send({})
         .expect(httpStatus.UNAUTHORIZED)
         .then(() => {
